@@ -1,0 +1,31 @@
+package domain
+
+import "errors"
+
+var (
+	ErrInvalidCredentials        = errors.New("invalid email or password")
+	ErrUnauthorized              = errors.New("unauthorized access")
+	ErrForbidden                 = errors.New("forbidden: insufficient permissions")
+	ErrTokenExpired              = errors.New("token has expired")
+	ErrTokenInvalid              = errors.New("invalid token")
+	ErrUserExists                = errors.New("user with this email already exists")
+	ErrUserNotFound              = errors.New("user not found")
+	ErrInvalidInput              = errors.New("invalid input data")
+	ErrValidationFailed          = errors.New("validation failed")
+	ErrContentNotFound           = errors.New("content not found")
+	ErrContentNotAccessible      = errors.New("you don't have access to this content")
+	ErrContentNotPublished       = errors.New("content is not published")
+	ErrPlanNotFound              = errors.New("plan not found")
+	ErrPlanNotAvailable          = errors.New("plan is not available")
+	ErrInactivePlan              = errors.New("plan is inactive")
+	ErrSubscriptionNotFound      = errors.New("subscription not found")
+	ErrSubscriptionExpired       = errors.New("subscription has expired")
+	ErrSubscriptionInactive      = errors.New("subscription is inactive")
+	ErrActiveSubscriptionExists  = errors.New("user already has an active subscription")
+	ErrSubscriptionLimitExceeded = errors.New("maximum concurrent device limit exceeded")
+	ErrWatchHistoryNotFound      = errors.New("watch history not found")
+	ErrInvalidProgress           = errors.New("invalid progress data")
+	ErrNotFound                  = errors.New("resource not found")
+	ErrInternalServer            = errors.New("internal server error")
+	ErrDatabaseError             = errors.New("database operation failed")
+)

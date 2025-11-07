@@ -1,48 +1,25 @@
-# Binaries for programs and plugins
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
-
-# Output of the go coverage tool, specifically when used with lite IDEs
+*.test
 *.out
-
-# Dependency directory (remove the comment below to ignore it)
+go.work
 vendor/
-
-# Go modules directory
-/go/pkg/
-
-# If you use Go modules, ignore downloaded module files
-/go/pkg/mod/
-
-# Executable binary created by `go build`
-/bin/
-/build/
-
-# IDE/editor-specific files
+.env
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# macOS system files
+*~
 .DS_Store
-
-# Environment files containing secrets or config data
-.env
-
-# Logs and temp files
+Thumbs.db
+main
+streaming-platform
 *.log
-/tmp/
-
-# Compiled object files
-*.o
-*.a
-
-# Coverage profile files
-coverage.out
+*.db
+*.sqlite
 
 # Default build
 Rohan-Srivastava_Golang-Backend-Practical-Task
