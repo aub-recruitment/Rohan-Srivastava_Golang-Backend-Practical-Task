@@ -2,6 +2,8 @@ package usecases
 
 import (
 	"context"
+	"fmt"
+	"time"
 
 	"github.com/etsrohan/Rohan-Srivastava_Golang-Backend-Practical-Task/internal/domain"
 	"github.com/etsrohan/Rohan-Srivastava_Golang-Backend-Practical-Task/internal/infrastructure"
@@ -12,12 +14,14 @@ import (
 )
 
 type AuthUseCase struct {
-	userRepo   repositories.UserRepository
-	jwtService *infrastructure.JWTService
+	userRepo     repositories.UserRepository
+	jwtService   *infrastructure.JWTService
+	cacheService *infrastructure.Cache
+	expiration   int
 }
 
-func NewAuthUseCase(userRepo repositories.UserRepository, jwtService *infrastructure.JWTService) *AuthUseCase {
-	return &AuthUseCase{userRepo: userRepo, jwtService: jwtService}
+func NewAuthUseCase(userRepo repositories.UserRepository, jwtService *infrastructure.JWTService, cache *infrastructure.Cache, expiration int) *AuthUseCase {
+	return &AuthUseCase{userRepo: userRepo, jwtService: jwtService, cacheService: cache, expiration: expiration}
 }
 
 type RegisterInput struct {
@@ -35,8 +39,9 @@ type LoginInput struct {
 }
 
 type AuthResponse struct {
-	Token string       `json:"token"`
-	User  *domain.User `json:"user"`
+	Token   string       `json:"token"`
+	Refresh string       `json:"refresh"`
+	User    *domain.User `json:"user"`
 }
 
 func (uc *AuthUseCase) Register(ctx context.Context, input RegisterInput) (*AuthResponse, error) {
@@ -44,10 +49,12 @@ func (uc *AuthUseCase) Register(ctx context.Context, input RegisterInput) (*Auth
 	if existingUser != nil {
 		return nil, domain.ErrUserExists
 	}
+
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, err
 	}
+
 	user := &domain.User{
 		ID:           uuid.New(),
 		Email:        input.Email,
@@ -61,11 +68,16 @@ func (uc *AuthUseCase) Register(ctx context.Context, input RegisterInput) (*Auth
 	if err := uc.userRepo.Create(ctx, user); err != nil {
 		return nil, err
 	}
-	token, err := uc.jwtService.GenerateToken(user.ID, user.Email, user.IsAdmin, 24)
+
+	token, refresh, err := uc.jwtService.GenerateToken(user.ID, user.Email, user.IsAdmin)
 	if err != nil {
 		return nil, err
 	}
-	return &AuthResponse{Token: token, User: user}, nil
+
+	uc.cacheService.Set(ctx, fmt.Sprintf("token:%s", user.ID), token, time.Duration(uc.expiration)*time.Hour)
+	uc.cacheService.Set(ctx, fmt.Sprintf("refresh:%s", user.ID), refresh, time.Duration(uc.expiration)*time.Hour*24)
+
+	return &AuthResponse{Token: token, Refresh: refresh, User: user}, nil
 }
 
 func (uc *AuthUseCase) Login(ctx context.Context, input LoginInput) (*AuthResponse, error) {
@@ -76,9 +88,41 @@ func (uc *AuthUseCase) Login(ctx context.Context, input LoginInput) (*AuthRespon
 	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(input.Password)); err != nil {
 		return nil, domain.ErrInvalidCredentials
 	}
-	token, err := uc.jwtService.GenerateToken(user.ID, user.Email, user.IsAdmin, 24)
+
+	token, refresh, err := uc.jwtService.GenerateToken(user.ID, user.Email, user.IsAdmin)
 	if err != nil {
 		return nil, err
 	}
-	return &AuthResponse{Token: token, User: user}, nil
+
+	uc.resetTokenCache(ctx, token, refresh, user.ID)
+
+	return &AuthResponse{Token: token, Refresh: refresh, User: user}, nil
+}
+
+func (uc *AuthUseCase) Refresh(ctx context.Context, userID uuid.UUID) (*AuthResponse, error) {
+	user, err := uc.userRepo.GetByID(ctx, userID)
+	if err != nil {
+		return nil, domain.ErrTokenInvalid
+	}
+	token, refresh, err := uc.jwtService.GenerateToken(user.ID, user.Email, user.IsAdmin)
+	if err != nil {
+		return nil, err
+	}
+
+	uc.resetTokenCache(ctx, token, refresh, user.ID)
+
+	return &AuthResponse{Token: token, Refresh: refresh, User: user}, nil
+}
+
+func (uc *AuthUseCase) resetTokenCache(ctx context.Context, token, refresh string, id uuid.UUID) {
+	tokenKey := fmt.Sprintf("token:%s", id)
+	refreshKey := fmt.Sprintf("refresh:%s", id)
+	if _, err := uc.cacheService.Get(ctx, tokenKey); err != nil {
+		uc.cacheService.Delete(ctx, tokenKey)
+	}
+	if _, err := uc.cacheService.Get(ctx, refreshKey); err != nil {
+		uc.cacheService.Delete(ctx, refreshKey)
+	}
+	uc.cacheService.Set(ctx, fmt.Sprintf("token:%s", id), token, time.Duration(uc.expiration)*time.Hour)
+	uc.cacheService.Set(ctx, fmt.Sprintf("refresh:%s", id), refresh, time.Duration(uc.expiration)*time.Hour*24)
 }

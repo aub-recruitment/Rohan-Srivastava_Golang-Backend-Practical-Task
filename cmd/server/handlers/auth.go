@@ -5,6 +5,7 @@ import (
 
 	"github.com/etsrohan/Rohan-Srivastava_Golang-Backend-Practical-Task/internal/usecases"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type AuthHandler struct {
@@ -36,6 +37,21 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		return
 	}
 	response, err := h.authUseCase.Login(c.Request.Context(), input)
+	if err != nil {
+		c.JSON(getErrorStatusCode(err), gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, response)
+}
+
+func (h *AuthHandler) Refresh(c *gin.Context) {
+	userID := c.GetString("userID")
+	id, err := uuid.Parse(userID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid user ID"})
+		return
+	}
+	response, err := h.authUseCase.Refresh(c.Request.Context(), id)
 	if err != nil {
 		c.JSON(getErrorStatusCode(err), gin.H{"error": err.Error()})
 		return

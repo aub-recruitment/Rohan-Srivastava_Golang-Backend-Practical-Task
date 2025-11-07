@@ -10,11 +10,11 @@ import (
 )
 
 // AuthMiddleware validates JWT tokens
-func AuthMiddleware(jwtService *infrastructure.JWTService) gin.HandlerFunc {
+func AuthMiddleware(jwtService *infrastructure.JWTService, cache *infrastructure.Cache) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": domain.ErrUnauthorized.Error()})
+			c.JSON(http.StatusUnauthorized, gin.H{"error": domain.ErrTokenMissing.Error()})
 			c.Abort()
 			return
 		}
@@ -25,12 +25,32 @@ func AuthMiddleware(jwtService *infrastructure.JWTService) gin.HandlerFunc {
 			return
 		}
 		token := parts[1]
-		claims, err := jwtService.ValidateToken(token)
+		refresh := c.Request.URL.Path == "/api/v1/auth/refresh"
+
+		claims, err := jwtService.ValidateToken(token, refresh)
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": domain.ErrTokenInvalid.Error()})
 			c.Abort()
 			return
 		}
+
+		prefix := "token:"
+		if refresh {
+			prefix = "refresh:"
+		}
+		key := prefix + claims.UserID.String()
+		stored, err := cache.Get(c, key)
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": domain.ErrTokenExpired.Error()})
+			c.Abort()
+			return
+		}
+		if stored != token {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": domain.ErrTokenExpired.Error()})
+			c.Abort()
+			return
+		}
+
 		c.Set("userID", claims.UserID.String())
 		c.Set("userEmail", claims.Email)
 		c.Set("isAdmin", claims.IsAdmin)

@@ -1,1 +1,1 @@
-CompileDaemon -command="./Rohan-Srivastava_Golang-Backend-Practical-Task"
+CompileDaemon -build="go build -o app ./cmd/server" -command="./app"

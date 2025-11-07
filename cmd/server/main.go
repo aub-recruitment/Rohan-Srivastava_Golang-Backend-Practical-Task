@@ -40,7 +40,7 @@ func main() {
 		log.Fatalf("Failed to connect to Redis: %v", err)
 	}
 
-	jwtService := infrastructure.NewJWTService(cfg.JWTSecret)
+	jwtService := infrastructure.NewJWTService(cfg.JWTSecret, cfg.JWTSauce, cfg.JWTExpiration)
 
 	userRepo := postgres.NewUserRepository(db)
 	contentRepo := postgres.NewContentRepository(db)
@@ -48,7 +48,7 @@ func main() {
 	subscriptionRepo := postgres.NewSubscriptionRepository(db)
 	watchHistoryRepo := postgres.NewWatchHistoryRepository(db)
 
-	authUseCase := usecases.NewAuthUseCase(userRepo, jwtService)
+	authUseCase := usecases.NewAuthUseCase(userRepo, jwtService, cache, cfg.JWTExpiration)
 	userUseCase := usecases.NewUserUseCase(userRepo, subscriptionRepo)
 	contentUseCase := usecases.NewContentUseCase(contentRepo, subscriptionRepo, userRepo)
 	planUseCase := usecases.NewPlanUseCase(planRepo)
@@ -114,6 +114,7 @@ func setupRoutes(
 	router.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": "healthy"})
 	})
+	router.NoRoute(middleware.NoRouteMiddleware())
 
 	v1 := router.Group("/api/v1")
 	public := v1.Group("")
@@ -135,13 +136,17 @@ func setupRoutes(
 		}
 	}
 
-	authMiddleware := middleware.AuthMiddleware(jwtService)
+	authMiddleware := middleware.AuthMiddleware(jwtService, cache)
 	rateLimitMiddleware := middleware.RateLimitMiddleware(cache, 100, time.Minute)
 
 	protected := v1.Group("")
 	protected.Use(authMiddleware)
 	protected.Use(rateLimitMiddleware)
 	{
+		auth := protected.Group("/auth")
+		{
+			auth.GET("/refresh", authHandler.Refresh)
+		}
 		users := protected.Group("/users")
 		{
 			users.GET("/profile", userHandler.GetProfile)

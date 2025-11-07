@@ -8,6 +8,7 @@ var (
 	ErrForbidden                 = errors.New("forbidden: insufficient permissions")
 	ErrTokenExpired              = errors.New("token has expired")
 	ErrTokenInvalid              = errors.New("invalid token")
+	ErrTokenMissing              = errors.New("token missing")
 	ErrUserExists                = errors.New("user with this email already exists")
 	ErrUserNotFound              = errors.New("user not found")
 	ErrInvalidInput              = errors.New("invalid input data")

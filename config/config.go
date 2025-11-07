@@ -16,6 +16,7 @@ type Config struct {
 	RedisPwd      string
 	RedisDB       int
 	JWTSecret     string
+	JWTSauce      string
 	JWTExpiration int
 	DBHost        string
 	DBPort        string
@@ -23,6 +24,7 @@ type Config struct {
 	DBPassword    string
 	DBName        string
 	DBSSLMode     string
+	RequestLimit  int
 }
 
 func Load() (*Config, error) {
@@ -36,13 +38,15 @@ func Load() (*Config, error) {
 		RedisPwd:      getEnv("REDIS_PASSWORD", ""),
 		RedisDB:       getEnvAsInt("REDIS_DB", 0),
 		JWTSecret:     getEnv("JWT_SECRET", ""),
-		JWTExpiration: getEnvAsInt("JWT_EXPIRATION", 24),
+		JWTSauce:      getEnv("JWT_SAUCE", ""),
+		JWTExpiration: getEnvAsInt("JWT_EXPIRATION", 1),
 		DBHost:        getEnv("DB_HOST", "localhost"),
 		DBPort:        getEnv("DB_PORT", "5432"),
 		DBUser:        getEnv("DB_USERNAME", "postgres"),
 		DBPassword:    getEnv("DB_PASSWORD", "postgres"),
 		DBName:        getEnv("DB_NAME", "aub-task"),
 		DBSSLMode:     getEnv("DB_SSLMODE", "disable"),
+		RequestLimit:  getEnvAsInt("RATE_LIMIT", 100),
 	}
 	if cfg.DatabaseURL == "" {
 		cfg.DatabaseURL = fmt.Sprintf(
