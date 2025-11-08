@@ -153,43 +153,31 @@ go test ./tests/unit -v -cover
 
 ## Architecture Explanation
 
-```
 The architecture of this streaming backend is grounded in Clean Architecture and Domain-Driven Design principles, with a modular separation of domains, usecases, repositories, infrastructure, and interfaces. By designing around a layered architecture using Go and the Gin framework, every component—from core business logic to application orchestration to database adapters—remains isolated and testable. All dependencies are injected dynamically, and domain entities are completely decoupled from infrastructure, making the system easy to extend for future requirements such as new storage engines or authentication methods.
 
 I chose this architecture because it provides long-term stability and flexibility, especially for fast-evolving backend APIs. The separation of concerns ensures that business logic and rules are never polluted by infrastructure code, dramatically reducing bugs and onboarding complexity. Automated unit testing with mocks and contract-first repositories also support rapid iteration and confident refactoring—key factors in building robust, scalable streaming services for production. Overall, this approach balances rapid delivery, security, and maintainability, while staying idiomatic to modern Go enterprise backends.
-```
 
 ## Answers To Think Pieces
 
 ### What parts of your architecture would you scale independently and how?
 
-```
 Deploy API servers, database, Redis cache, and object storage as separate scalable units using Kubernetes or Docker Swarm. Use horizontal pod autoscalers to add API replicas based on CPU/memory metrics, read replicas for database scaling (writes to master, reads distributed), and separate Redis clusters for sessions, rate-limiting, and caching. This decoupling allows you to scale high-demand components without over-provisioning everything.
-```
 
 ### How would you partition or archive watch history and analytical logs at scale?
 
-```
 Use range-based time partitioning (by month/year) in PostgreSQL—query performance stays fast by scanning only relevant partitions. Archive old watch history (>6 months) to cold storage (AWS S3 Glacier) or analytical warehouses (BigQuery, Redshift) via scheduled batch jobs. Implement automatic purging policies to delete data past retention periods, keeping the main database lean. This reduces query latency and storage costs.
-```
 
 ### How would you optimize costs for video storage and high data transfer volumes?
 
-```
 Store videos on cloud object storage (S3/GCS) with lifecycle policies to auto-archive to Glacier after 30 days. Use a CDN (CloudFront, Cloudflare, BlazingCDN) to cache content at edge locations, reducing origin bandwidth costs by 35–40%. Implement adaptive bitrate streaming (ABR) to deliver lower resolutions on mobile devices, and leverage volume-based CDN agreements (commit 70% of data upfront for better rates). This combined approach can reduce costs by 25–40%.
-```
 
 ### How would you track active sessions efficiently?
 
-```
 Store active session tokens + device info in Redis with auto-expiry; use short-lived JWT tokens (15-min expiry) renewed during playback. Implement periodic heartbeats (every 30–60 seconds) from the client—if no heartbeat, auto-expire the session after grace period. Track concurrent stream counts in Redis per user ID with incrementing/decrementing on play/stop. This prevents ghost sessions and keeps memory efficient.
-```
 
 ### How would you enforce concurrent streaming limits per subscription plan (e.g., 2 devices)?
 
-```
 Use Redis counters per user to track active device streams in real-time. When a user attempts to play on a new device, check INCR user:{id}:streams. If count exceeds the plan limit (e.g., 2 for Basic), either block the new request or auto-stop the oldest session (industry standard). Implement DRM license renewal every 10 minutes during playback to re-validate limits. Include device ID + IP address in JWT claims; if mismatched, revoke the token. This is how Netflix, Disney+, and Prime enforce limits.
-```
 
 ## AI Tooling Used
 
