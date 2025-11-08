@@ -10,6 +10,17 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
+// CacheInterface defines the interface for cache operations
+type CacheInterface interface {
+	Set(ctx context.Context, key string, value interface{}, expiration time.Duration) error
+	Get(ctx context.Context, key string) (string, error)
+	Delete(ctx context.Context, key string) error
+	Increment(ctx context.Context, key string) (int64, error)
+	Expire(ctx context.Context, key string, expiration time.Duration) error
+	CheckRateLimit(ctx context.Context, identifier string, maxRequests int64, window time.Duration) (bool, error)
+	Close() error
+}
+
 type Cache struct {
 	client *redis.Client
 }

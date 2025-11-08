@@ -15,12 +15,12 @@ import (
 
 type AuthUseCase struct {
 	userRepo     repositories.UserRepository
-	jwtService   *infrastructure.JWTService
-	cacheService *infrastructure.Cache
+	jwtService   infrastructure.JWTServiceInterface
+	cacheService infrastructure.CacheInterface
 	expiration   int
 }
 
-func NewAuthUseCase(userRepo repositories.UserRepository, jwtService *infrastructure.JWTService, cache *infrastructure.Cache, expiration int) *AuthUseCase {
+func NewAuthUseCase(userRepo repositories.UserRepository, jwtService infrastructure.JWTServiceInterface, cache infrastructure.CacheInterface, expiration int) *AuthUseCase {
 	return &AuthUseCase{userRepo: userRepo, jwtService: jwtService, cacheService: cache, expiration: expiration}
 }
 

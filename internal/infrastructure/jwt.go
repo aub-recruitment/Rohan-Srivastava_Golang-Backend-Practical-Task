@@ -8,6 +8,13 @@ import (
 	"github.com/google/uuid"
 )
 
+// JWTServiceInterface defines the interface for JWT operations
+type JWTServiceInterface interface {
+	GenerateToken(userID uuid.UUID, email string, isAdmin bool) (string, string, error)
+	ValidateToken(tokenString string, refresh bool) (*Claims, error)
+	RefreshToken(refreshToken string) (string, string, error)
+}
+
 type JWTService struct {
 	secretKey   string
 	secretSauce string
