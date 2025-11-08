@@ -22,9 +22,10 @@ func NewContentUseCase(contentRepo repositories.ContentRepository, subscriptionR
 type CreateContentInput struct {
 	Title           string             `json:"title" binding:"required"`
 	Description     string             `json:"description"`
-	AccessLevel     domain.AccessLevel `json:"access_level" binding:"required"`
+	AccessLevel     domain.AccessLevel `json:"access_level" binding:"required,oneof=free basic premium"`
 	DurationSeconds int                `json:"duration_seconds" binding:"required"`
 	ThumbnailURL    string             `json:"thumbnail_url"`
+	TrailerURL      string             `json:"trailer_url"`
 	VideoURL        string             `json:"video_url"`
 	Published       bool               `json:"published"`
 }
@@ -37,6 +38,7 @@ func (uc *ContentUseCase) CreateContent(ctx context.Context, input CreateContent
 		AccessLevel:     input.AccessLevel,
 		DurationSeconds: input.DurationSeconds,
 		ThumbnailURL:    input.ThumbnailURL,
+		TrailerURL:      input.TrailerURL,
 		VideoURL:        input.VideoURL,
 		Published:       input.Published,
 	}

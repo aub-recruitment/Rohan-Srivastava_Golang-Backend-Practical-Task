@@ -83,13 +83,13 @@ func (h *WatchHistoryHandler) UpdateProgress(c *gin.Context) {
 		return
 	}
 	var input struct {
-		WatchedSeconds int `json:"watched_seconds" binding:"required"`
+		WatchedSeconds *int `json:"watched_seconds" binding:"required,gte=0"`
 	}
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	watchHistory, err := h.watchHistoryUseCase.UpdateProgress(c.Request.Context(), userID, historyID, input.WatchedSeconds)
+	watchHistory, err := h.watchHistoryUseCase.UpdateProgress(c.Request.Context(), userID, historyID, *input.WatchedSeconds)
 	if err != nil {
 		c.JSON(getErrorStatusCode(err), gin.H{"error": err.Error()})
 		return

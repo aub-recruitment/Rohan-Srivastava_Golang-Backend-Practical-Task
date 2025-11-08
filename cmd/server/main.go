@@ -137,7 +137,7 @@ func setupRoutes(
 	}
 
 	authMiddleware := middleware.AuthMiddleware(jwtService, cache)
-	rateLimitMiddleware := middleware.RateLimitMiddleware(cache, 100, time.Minute)
+	rateLimitMiddleware := middleware.RateLimitMiddleware(cache, int64(cfg.RequestLimit), time.Minute)
 
 	protected := v1.Group("")
 	protected.Use(authMiddleware)

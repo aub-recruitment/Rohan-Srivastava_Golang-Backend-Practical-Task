@@ -54,6 +54,7 @@ type Content struct {
 	AccessLevel     AccessLevel `gorm:"type:varchar(20);not null;index" json:"access_level"`
 	DurationSeconds int         `gorm:"not null" json:"duration_seconds"`
 	ThumbnailURL    string      `json:"thumbnail_url"`
+	TrailerURL      string      `json:"trailer_url"`
 	VideoURL        string      `json:"video_url"`
 	Published       bool        `gorm:"default:false;index" json:"published"`
 	CreatedAt       time.Time   `gorm:"autoCreateTime" json:"created_at"`

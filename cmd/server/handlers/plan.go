@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/etsrohan/Rohan-Srivastava_Golang-Backend-Practical-Task/internal/usecases"
@@ -19,9 +20,11 @@ func NewPlanHandler(planUseCase *usecases.PlanUseCase) *PlanHandler {
 func (h *PlanHandler) CreatePlan(c *gin.Context) {
 	var input usecases.CreatePlanInput
 	if err := c.ShouldBindJSON(&input); err != nil {
+		fmt.Println(input)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	fmt.Println("_________----------________")
 	plan, err := h.planUseCase.CreatePlan(c.Request.Context(), input)
 	if err != nil {
 		c.JSON(getErrorStatusCode(err), gin.H{"error": err.Error()})

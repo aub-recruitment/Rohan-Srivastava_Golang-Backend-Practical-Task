@@ -25,7 +25,7 @@ func NewWatchHistoryUseCase(watchHistoryRepo repositories.WatchHistoryRepository
 
 type WatchHistoryInput struct {
 	ContentID      uuid.UUID `json:"content_id" binding:"required"`
-	WatchedSeconds int       `json:"watched_seconds" binding:"required"`
+	WatchedSeconds *int      `json:"watched_seconds" binding:"required,gte=0"`
 }
 
 func (uc *WatchHistoryUseCase) CreateOrUpdateWatchHistory(ctx context.Context, userID uuid.UUID, input WatchHistoryInput) (*domain.WatchHistory, error) {
@@ -44,11 +44,11 @@ func (uc *WatchHistoryUseCase) CreateOrUpdateWatchHistory(ctx context.Context, u
 		return nil, err
 	}
 	if existingHistory != nil {
-		existingHistory.WatchedSeconds = input.WatchedSeconds
+		existingHistory.WatchedSeconds = *input.WatchedSeconds
 		existingHistory.LastWatchedAt = time.Now()
 		if existingHistory.ProgressPercentage() >= 90.0 {
 			existingHistory.Status = domain.WatchStatusCompleted
-		} else if input.WatchedSeconds > 0 {
+		} else if *input.WatchedSeconds > 0 {
 			existingHistory.Status = domain.WatchStatusPaused
 		}
 		if err := uc.watchHistoryRepo.Update(ctx, existingHistory); err != nil {
@@ -61,7 +61,7 @@ func (uc *WatchHistoryUseCase) CreateOrUpdateWatchHistory(ctx context.Context, u
 		ID:             uuid.New(),
 		UserID:         userID,
 		ContentID:      input.ContentID,
-		WatchedSeconds: input.WatchedSeconds,
+		WatchedSeconds: *input.WatchedSeconds,
 		TotalSeconds:   content.DurationSeconds,
 		Status:         domain.WatchStatusStarted,
 		LastWatchedAt:  time.Now(),

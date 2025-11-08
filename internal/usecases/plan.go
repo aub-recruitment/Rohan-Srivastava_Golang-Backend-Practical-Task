@@ -18,9 +18,9 @@ func NewPlanUseCase(planRepo repositories.PlanRepository) *PlanUseCase {
 
 type CreatePlanInput struct {
 	Name              string             `json:"name" binding:"required"`
-	Price             int64              `json:"price" binding:"required"`
+	Price             *int64             `json:"price" binding:"required,gte=0"`
 	ValidityDays      int                `json:"validity_days" binding:"required"`
-	AccessLevel       domain.AccessLevel `json:"access_level" binding:"required"`
+	AccessLevel       domain.AccessLevel `json:"access_level" binding:"required,oneof=free basic premium"`
 	MaxDevicesAllowed int                `json:"max_devices_allowed" binding:"required"`
 	Resolution        string             `json:"resolution"`
 	Description       string             `json:"description"`
@@ -31,7 +31,7 @@ func (uc *PlanUseCase) CreatePlan(ctx context.Context, input CreatePlanInput) (*
 	plan := &domain.Plan{
 		ID:                uuid.New(),
 		Name:              input.Name,
-		Price:             input.Price,
+		Price:             *input.Price,
 		ValidityDays:      input.ValidityDays,
 		AccessLevel:       input.AccessLevel,
 		MaxDevicesAllowed: input.MaxDevicesAllowed,
@@ -59,7 +59,7 @@ func (uc *PlanUseCase) UpdatePlan(ctx context.Context, planID uuid.UUID, input C
 		return nil, err
 	}
 	plan.Name = input.Name
-	plan.Price = input.Price
+	plan.Price = *input.Price
 	plan.ValidityDays = input.ValidityDays
 	plan.AccessLevel = input.AccessLevel
 	plan.MaxDevicesAllowed = input.MaxDevicesAllowed
