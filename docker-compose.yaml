@@ -51,6 +51,7 @@ services:
       REDIS_DB: 0
       JWT_SECRET: your-super-secret-jwt-key-change-in-production
       JWT_EXPIRATION: 24
+      RATE_LIMIT: 100
     depends_on:
       postgres:
         condition: service_healthy

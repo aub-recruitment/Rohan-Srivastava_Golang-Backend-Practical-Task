@@ -12,10 +12,16 @@ type UserHandler struct {
 	userUseCase *usecases.UserUseCase
 }
 
+// @name NewUserHandler - Creates new instance of user handler
+// @param userUseCase - user service instance
+// @returns - new user handler instance
 func NewUserHandler(userUseCase *usecases.UserUseCase) *UserHandler {
 	return &UserHandler{userUseCase: userUseCase}
 }
 
+// @name GetProfile - Gets user's profile
+// @param c - gin context
+// @returns - user's profile
 func (h *UserHandler) GetProfile(c *gin.Context) {
 	userID := c.GetString("userID")
 	id, err := uuid.Parse(userID)
@@ -31,6 +37,9 @@ func (h *UserHandler) GetProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
+// @name UpdateProfile - updates user's profile
+// @param c - gin context
+// @returns - updated profile
 func (h *UserHandler) UpdateProfile(c *gin.Context) {
 	userID := c.GetString("userID")
 	id, err := uuid.Parse(userID)
@@ -51,6 +60,9 @@ func (h *UserHandler) UpdateProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
+// @name GetSubscriptionHistory - Get's user's subscription history
+// @param c - gin context
+// @returns - subscription history slice
 func (h *UserHandler) GetSubscriptionHistory(c *gin.Context) {
 	userID := c.GetString("userID")
 	id, err := uuid.Parse(userID)

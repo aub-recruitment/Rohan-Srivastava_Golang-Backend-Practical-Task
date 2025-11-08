@@ -13,10 +13,19 @@ type WatchHistoryHandler struct {
 	watchHistoryUseCase *usecases.WatchHistoryUseCase
 }
 
+// @name NewWatchHistoryHandler - Creates new instance of watch history handler
+// @param watchHistoryUseCase - watch history service instance
+// @returns - new instance of watch history handler
 func NewWatchHistoryHandler(watchHistoryUseCase *usecases.WatchHistoryUseCase) *WatchHistoryHandler {
 	return &WatchHistoryHandler{watchHistoryUseCase: watchHistoryUseCase}
 }
 
+// @name CreateOrUpdateWatchHistory - Create/Update user's watch history
+// @param c - gin context
+// @returns - New watch history
+// @dev - checks access level, use watched seconds = 0 for checking access
+//
+//	for a given content_id
 func (h *WatchHistoryHandler) CreateOrUpdateWatchHistory(c *gin.Context) {
 	userID, err := uuid.Parse(c.GetString("userID"))
 	if err != nil {
@@ -36,6 +45,9 @@ func (h *WatchHistoryHandler) CreateOrUpdateWatchHistory(c *gin.Context) {
 	c.JSON(http.StatusOK, watchHistory)
 }
 
+// @name GetWatchHistory - Get's user's watch history
+// @param c - gin context
+// @returns - user's recent watch history in desc order of time
 func (h *WatchHistoryHandler) GetWatchHistory(c *gin.Context) {
 	userID, err := uuid.Parse(c.GetString("userID"))
 	if err != nil {
@@ -57,6 +69,9 @@ func (h *WatchHistoryHandler) GetWatchHistory(c *gin.Context) {
 	})
 }
 
+// @name GetContinueWatching - Get's user's unfinished content
+// @param c - gin context
+// @returns - user's recent unfinished content in desc order of time
 func (h *WatchHistoryHandler) GetContinueWatching(c *gin.Context) {
 	userID, err := uuid.Parse(c.GetString("userID"))
 	if err != nil {
@@ -71,6 +86,9 @@ func (h *WatchHistoryHandler) GetContinueWatching(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"continue_watching": histories})
 }
 
+// @name UpdateProgress - Updates user's progress on a given content
+// @param c - gin context
+// @returns - newly updated watch history for single content
 func (h *WatchHistoryHandler) UpdateProgress(c *gin.Context) {
 	userID, err := uuid.Parse(c.GetString("userID"))
 	if err != nil {

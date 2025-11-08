@@ -1,0 +1,2113 @@
+{
+  "collection": {
+    "info": {
+      "_postman_id": "4ecf27e7-b1c2-425a-b90e-4622f008ed76",
+      "name": "Aubergine Backend Task",
+      "description": "Golang Backend APIs for Aubergine Interview Task",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "updatedAt": "2025-11-08T11:57:03.000Z",
+      "createdAt": "2025-11-07T13:54:32.000Z",
+      "lastUpdatedBy": "42882263",
+      "uid": "42882263-4ecf27e7-b1c2-425a-b90e-4622f008ed76"
+    },
+    "item": [
+      {
+        "name": "Health",
+        "item": [
+          {
+            "name": "health check",
+            "id": "426c0669-a68e-4701-8b6b-97a30b81fd76",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{url}}/health",
+                "host": ["{{url}}"],
+                "path": ["health"]
+              },
+              "description": "**Health check of the API**"
+            },
+            "response": [
+              {
+                "id": "1114b7d2-4b2d-4e96-b4f9-ed7380306a34",
+                "name": "success",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{url}}/health",
+                    "host": ["{{url}}"],
+                    "path": ["health"]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 11:32:48 GMT" },
+                  { "key": "Content-Length", "value": "20" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"status\": \"healthy\"\n}",
+                "uid": "42882263-1114b7d2-4b2d-4e96-b4f9-ed7380306a34"
+              }
+            ],
+            "uid": "42882263-426c0669-a68e-4701-8b6b-97a30b81fd76"
+          }
+        ],
+        "id": "4e6eade2-cb26-43ce-92a0-8501af130005",
+        "uid": "42882263-4e6eade2-cb26-43ce-92a0-8501af130005"
+      },
+      {
+        "name": "Auth",
+        "item": [
+          {
+            "name": "login",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "07260b51-0d03-4330-8304-23e5ffdd45a4",
+                  "exec": [
+                    "// Parse the JSON response body",
+                    "var jsonData = pm.response.json();",
+                    "",
+                    "// Assuming the access token is in jsonData.access_token (adjust based on your API response)",
+                    "var accessToken = jsonData.token;",
+                    "var refreshToken = jsonData.refresh;",
+                    "",
+                    "// Set the access token in an environment variable named \"access_token\"",
+                    "if (accessToken) {",
+                    "    pm.environment.unset(\"token\");",
+                    "    pm.environment.set(\"token\", accessToken);",
+                    "    console.log(\"Access token saved:\", accessToken);",
+                    "} else {",
+                    "    console.log(\"Access token not found in the response\");",
+                    "}",
+                    "if (refreshToken) {",
+                    "    pm.environment.unset(\"refresh\");",
+                    "    pm.environment.set(\"refresh\", refreshToken);",
+                    "    console.log(\"Access token saved:\", accessToken);",
+                    "} else {",
+                    "    console.log(\"Access token not found in the response\");",
+                    "}",
+                    ""
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "requests": {}
+                }
+              },
+              {
+                "listen": "prerequest",
+                "script": {
+                  "id": "f5ebc16f-99bb-498f-aad4-deca8af90e02",
+                  "exec": [""],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "requests": {}
+                }
+              }
+            ],
+            "id": "1f69ff06-d4c4-4535-87fb-cb6b8956cd4d",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"email\": \"etsrohan4@gmail.com\",\n    \"password\": \"Hello@123\"\n}",
+                "options": { "raw": { "language": "json" } }
+              },
+              "url": {
+                "raw": "{{url}}/api/v1/auth/login",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "auth", "login"]
+              },
+              "description": "**Login with email and password. Returns access & refresh tokens and user info.**"
+            },
+            "response": [
+              {
+                "id": "1a2f4dfd-1648-44f7-90e1-e05b8e3ae9b6",
+                "name": "success",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"email\": \"etsrohan@gmail.com\",\n    \"password\": \"Hello@123\"\n}",
+                    "options": { "raw": { "language": "json" } }
+                  },
+                  "url": {
+                    "raw": "{{url}}/api/v1/auth/login",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "auth", "login"]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Fri, 07 Nov 2025 22:37:03 GMT" },
+                  { "key": "Content-Length", "value": "866" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZDc4Yjg3ZDQtN2U0MS00OTBlLThiNDAtM2FkMWJkMGI0N2ExIiwiZW1haWwiOiJldHNyb2hhbkBnbWFpbC5jb20iLCJpc19hZG1pbiI6ZmFsc2UsImV4cCI6MTc2MjU1ODYyMywibmJmIjoxNzYyNTU1MDIzLCJpYXQiOjE3NjI1NTUwMjN9.l4eOD2oYLw2IgaFeTvQMe1JOc2jH9E-ppjXUxdAWUHI\",\n    \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZDc4Yjg3ZDQtN2U0MS00OTBlLThiNDAtM2FkMWJkMGI0N2ExIiwiZW1haWwiOiJldHNyb2hhbkBnbWFpbC5jb20iLCJpc19hZG1pbiI6ZmFsc2UsImV4cCI6MTc2MjY0MTQyMywibmJmIjoxNzYyNTU1MDIzLCJpYXQiOjE3NjI1NTUwMjN9.1r-E41yjrz1_Yv1F5cjT4jQObU3gDxbTxXzAaayLHF8\",\n    \"user\": {\n        \"id\": \"d78b87d4-7e41-490e-8b40-3ad1bd0b47a1\",\n        \"email\": \"etsrohan@gmail.com\",\n        \"name\": \"Rohan Srivastava\",\n        \"bio\": \"This is my bio\",\n        \"picture\": \"hello.jpg\",\n        \"phone\": \"9810773119\",\n        \"is_admin\": false,\n        \"created_at\": \"2025-11-08T04:05:45.649204+05:30\",\n        \"updated_at\": \"2025-11-08T04:05:45.649204+05:30\"\n    }\n}",
+                "uid": "42882263-1a2f4dfd-1648-44f7-90e1-e05b8e3ae9b6"
+              }
+            ],
+            "uid": "42882263-1f69ff06-d4c4-4535-87fb-cb6b8956cd4d"
+          },
+          {
+            "name": "register",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "989e5332-909c-4f06-90da-979878da99d3",
+                  "exec": [
+                    "// Parse the JSON response body",
+                    "var jsonData = pm.response.json();",
+                    "",
+                    "// Assuming the access token is in jsonData.access_token (adjust based on your API response)",
+                    "var accessToken = jsonData.token;",
+                    "var refreshToken = jsonData.refresh;",
+                    "",
+                    "// Set the access token in an environment variable named \"access_token\"",
+                    "if (accessToken) {",
+                    "    pm.environment.unset(\"token\");",
+                    "    pm.environment.set(\"token\", accessToken);",
+                    "    console.log(\"Access token saved:\", accessToken);",
+                    "} else {",
+                    "    console.log(\"Access token not found in the response\");",
+                    "}",
+                    "if (refreshToken) {",
+                    "    pm.environment.unset(\"refresh\");",
+                    "    pm.environment.set(\"refresh\", refreshToken);",
+                    "    console.log(\"Access token saved:\", accessToken);",
+                    "} else {",
+                    "    console.log(\"Access token not found in the response\");",
+                    "}",
+                    ""
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "requests": {}
+                }
+              },
+              {
+                "listen": "prerequest",
+                "script": {
+                  "id": "0b685911-5cbd-4545-a46f-202629782832",
+                  "exec": [""],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "requests": {}
+                }
+              }
+            ],
+            "id": "b877788d-eeb4-4d2b-a65c-32f4eb24a45c",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"email\": \"etsrohan4@gmail.com\",\n    \"password\": \"Hello@123\",\n    \"name\": \"Rohan Srivastava\",\n    \"bio\": \"This is my bio\",\n    \"phone\": \"+91 9810773119\",\n    \"picture\": \"hello.jpg\"\n}",
+                "options": { "raw": { "language": "json" } }
+              },
+              "url": {
+                "raw": "{{url}}/api/v1/auth/register",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "auth", "register"]
+              },
+              "description": "**User registration. Returns access & refresh tokens and user info.**"
+            },
+            "response": [
+              {
+                "id": "a2cd7bd3-c180-41a4-83e1-80fbef086c29",
+                "name": "success",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"email\": \"etsrohan@gmail.com\",\n    \"password\": \"Hello@123\",\n    \"name\": \"Rohan Srivastava\",\n    \"bio\": \"This is my bio\",\n    \"phone\": \"9810773119\",\n    \"picture\": \"hello.jpg\"\n}",
+                    "options": { "raw": { "language": "json" } }
+                  },
+                  "url": {
+                    "raw": "{{url}}/api/v1/auth/register",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "auth", "register"]
+                  }
+                },
+                "status": "Created",
+                "code": 201,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Fri, 07 Nov 2025 22:35:45 GMT" },
+                  { "key": "Content-Length", "value": "866" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZDc4Yjg3ZDQtN2U0MS00OTBlLThiNDAtM2FkMWJkMGI0N2ExIiwiZW1haWwiOiJldHNyb2hhbkBnbWFpbC5jb20iLCJpc19hZG1pbiI6ZmFsc2UsImV4cCI6MTc2MjU1ODU0NSwibmJmIjoxNzYyNTU0OTQ1LCJpYXQiOjE3NjI1NTQ5NDV9.4skhfsDqeSqx_yP1LhaNEZevTcKjEwX2dzUFqAxd57Q\",\n    \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZDc4Yjg3ZDQtN2U0MS00OTBlLThiNDAtM2FkMWJkMGI0N2ExIiwiZW1haWwiOiJldHNyb2hhbkBnbWFpbC5jb20iLCJpc19hZG1pbiI6ZmFsc2UsImV4cCI6MTc2MjY0MTM0NSwibmJmIjoxNzYyNTU0OTQ1LCJpYXQiOjE3NjI1NTQ5NDV9.rGHXBsaKCIq7JSlvPYdj36Ooc-MeTGD0XlXKBFsMQvU\",\n    \"user\": {\n        \"id\": \"d78b87d4-7e41-490e-8b40-3ad1bd0b47a1\",\n        \"email\": \"etsrohan@gmail.com\",\n        \"name\": \"Rohan Srivastava\",\n        \"bio\": \"This is my bio\",\n        \"picture\": \"hello.jpg\",\n        \"phone\": \"9810773119\",\n        \"is_admin\": false,\n        \"created_at\": \"2025-11-08T04:05:45.649204+05:30\",\n        \"updated_at\": \"2025-11-08T04:05:45.649204+05:30\"\n    }\n}",
+                "uid": "42882263-a2cd7bd3-c180-41a4-83e1-80fbef086c29"
+              }
+            ],
+            "uid": "42882263-b877788d-eeb4-4d2b-a65c-32f4eb24a45c"
+          },
+          {
+            "name": "refresh",
+            "event": [
+              {
+                "listen": "prerequest",
+                "script": {
+                  "id": "d6f709dd-60ba-411d-b332-e363cdf4640e",
+                  "exec": [""],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "requests": {}
+                }
+              },
+              {
+                "listen": "test",
+                "script": {
+                  "id": "3b694eeb-08d7-4756-a1e7-ff098a191341",
+                  "exec": [
+                    "// Parse the JSON response body",
+                    "var jsonData = pm.response.json();",
+                    "",
+                    "// Assuming the access token is in jsonData.access_token (adjust based on your API response)",
+                    "var accessToken = jsonData.token;",
+                    "var refreshToken = jsonData.refresh;",
+                    "",
+                    "// Set the access token in an environment variable named \"access_token\"",
+                    "if (accessToken) {",
+                    "    pm.environment.unset(\"token\");",
+                    "    pm.environment.set(\"token\", accessToken);",
+                    "    console.log(\"Access token saved:\", accessToken);",
+                    "} else {",
+                    "    console.log(\"Access token not found in the response\");",
+                    "}",
+                    "if (refreshToken) {",
+                    "    pm.environment.unset(\"refresh\");",
+                    "    pm.environment.set(\"refresh\", refreshToken);",
+                    "    console.log(\"Access token saved:\", accessToken);",
+                    "} else {",
+                    "    console.log(\"Access token not found in the response\");",
+                    "}",
+                    ""
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "requests": {}
+                }
+              }
+            ],
+            "id": "ccf992ac-4ec5-4519-87b2-4a28d6f1f3a6",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{refresh}}", "type": "string" }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{url}}/api/v1/auth/refresh",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "auth", "refresh"]
+              },
+              "description": "**Get new access and refresh tokens using the refresh token**"
+            },
+            "response": [
+              {
+                "id": "4417e4da-eaf9-4a08-a348-a57b819fc00b",
+                "name": "success",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{url}}/api/v1/auth/refresh",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "auth", "refresh"]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 05:16:38 GMT" },
+                  { "key": "Content-Length", "value": "872" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZDc4Yjg3ZDQtN2U0MS00OTBlLThiNDAtM2FkMWJkMGI0N2ExIiwiZW1haWwiOiJldHNyb2hhbkBnbWFpbC5jb20iLCJpc19hZG1pbiI6ZmFsc2UsImV4cCI6MTc2MjU4MjU5OCwibmJmIjoxNzYyNTc4OTk4LCJpYXQiOjE3NjI1Nzg5OTh9.rwuTF9VAejiEustx5aD4kCoRHR4G-XrIcvrcsL_ZmfU\",\n    \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZDc4Yjg3ZDQtN2U0MS00OTBlLThiNDAtM2FkMWJkMGI0N2ExIiwiZW1haWwiOiJldHNyb2hhbkBnbWFpbC5jb20iLCJpc19hZG1pbiI6ZmFsc2UsImV4cCI6MTc2MjY2NTM5OCwibmJmIjoxNzYyNTc4OTk4LCJpYXQiOjE3NjI1Nzg5OTh9.uVIWmHLVKI1-IFWrwHhRTQeZkaQ9N-jqP0o9Hd7C-Aw\",\n    \"user\": {\n        \"id\": \"d78b87d4-7e41-490e-8b40-3ad1bd0b47a1\",\n        \"email\": \"etsrohan@gmail.com\",\n        \"name\": \"Rohan Srivastava\",\n        \"bio\": \"This is my bio\",\n        \"picture\": \"/user/image\",\n        \"phone\": \"+91 9874241623\",\n        \"is_admin\": false,\n        \"created_at\": \"2025-11-08T04:05:45.649204+05:30\",\n        \"updated_at\": \"2025-11-08T10:42:39.878661+05:30\"\n    }\n}",
+                "uid": "42882263-4417e4da-eaf9-4a08-a348-a57b819fc00b"
+              }
+            ],
+            "uid": "42882263-ccf992ac-4ec5-4519-87b2-4a28d6f1f3a6"
+          }
+        ],
+        "id": "7587f7e8-69dd-4c68-b97e-3c7a5ca77141",
+        "description": "## `/api/v1/auth`",
+        "uid": "42882263-7587f7e8-69dd-4c68-b97e-3c7a5ca77141"
+      },
+      {
+        "name": "Users",
+        "item": [
+          {
+            "name": "profile",
+            "id": "d6a73dbd-99e2-4722-b52b-75c14dd7a410",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{url}}/api/v1/users/profile",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "users", "profile"]
+              },
+              "description": "**Get the authenticated user's profile.**"
+            },
+            "response": [
+              {
+                "id": "52f5288d-6efa-4584-b112-bc4b8cd22564",
+                "name": "success",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{url}}/api/v1/users/profile",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "users", "profile"]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 05:17:09 GMT" },
+                  { "key": "Content-Length", "value": "285" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"id\": \"d78b87d4-7e41-490e-8b40-3ad1bd0b47a1\",\n    \"email\": \"etsrohan@gmail.com\",\n    \"name\": \"Rohan Srivastava\",\n    \"bio\": \"This is my bio\",\n    \"picture\": \"/user/image\",\n    \"phone\": \"+91 9874241623\",\n    \"is_admin\": false,\n    \"created_at\": \"2025-11-08T04:05:45.649204+05:30\",\n    \"updated_at\": \"2025-11-08T10:42:39.878661+05:30\"\n}",
+                "uid": "42882263-52f5288d-6efa-4584-b112-bc4b8cd22564"
+              }
+            ],
+            "uid": "42882263-d6a73dbd-99e2-4722-b52b-75c14dd7a410"
+          },
+          {
+            "name": "update profile",
+            "id": "f1768b8a-f815-4a13-9973-d8f525179f76",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "PUT",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"Rohan Srivastava\",\n    \"bio\": \"This is my bio\",\n    \"picture\": \"/user/image\",\n    \"phone\": \"+91 9874241623\"\n}",
+                "options": { "raw": { "language": "json" } }
+              },
+              "url": {
+                "raw": "{{url}}/api/v1/users/profile",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "users", "profile"]
+              },
+              "description": "**Update the authenticated user's profile.**"
+            },
+            "response": [
+              {
+                "id": "cdda1dd0-b1ec-455a-baf8-fef61f21e2bb",
+                "name": "success",
+                "originalRequest": {
+                  "method": "PUT",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"name\": \"Rohan Srivastava\",\n    \"bio\": \"This is my bio\",\n    \"picture\": \"/user/image\",\n    \"phone\": \"+91 9874241623\"\n}",
+                    "options": { "raw": { "language": "json" } }
+                  },
+                  "url": {
+                    "raw": "{{url}}/api/v1/users/profile",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "users", "profile"]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 05:17:22 GMT" },
+                  { "key": "Content-Length", "value": "285" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"id\": \"d78b87d4-7e41-490e-8b40-3ad1bd0b47a1\",\n    \"email\": \"etsrohan@gmail.com\",\n    \"name\": \"Rohan Srivastava\",\n    \"bio\": \"This is my bio\",\n    \"picture\": \"/user/image\",\n    \"phone\": \"+91 9874241623\",\n    \"is_admin\": false,\n    \"created_at\": \"2025-11-08T04:05:45.649204+05:30\",\n    \"updated_at\": \"2025-11-08T10:47:22.516211+05:30\"\n}",
+                "uid": "42882263-cdda1dd0-b1ec-455a-baf8-fef61f21e2bb"
+              }
+            ],
+            "uid": "42882263-f1768b8a-f815-4a13-9973-d8f525179f76"
+          },
+          {
+            "name": "subscription history",
+            "id": "6ccf62ab-dd2d-49be-8990-af7e558eb568",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{url}}/api/v1/users/subscription-history",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "users", "subscription-history"]
+              },
+              "description": "**View the user's historical subscriptions.**"
+            },
+            "response": [
+              {
+                "id": "aaecb3b0-cfed-49e9-b03d-e2fb101487d1",
+                "name": "success",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{url}}/api/v1/users/subscription-history",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "users", "subscription-history"]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 06:52:14 GMT" },
+                  { "key": "Transfer-Encoding", "value": "chunked" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"subscriptions\": [\n        {\n            \"id\": \"c9e0eca4-574b-4db9-aae6-91dadf70b547\",\n            \"user_id\": \"4a62c741-c3d3-4456-8029-c0665750259f\",\n            \"plan_id\": \"940b51db-7bd4-4cd4-82f2-d7650f010b05\",\n            \"plan\": {\n                \"id\": \"940b51db-7bd4-4cd4-82f2-d7650f010b05\",\n                \"name\": \"Basic Tier\",\n                \"price\": 100,\n                \"validity_days\": 30,\n                \"access_level\": \"basic\",\n                \"max_devices_allowed\": 2,\n                \"resolution\": \"1080p\",\n                \"description\": \"The basic tier plan\",\n                \"is_active\": true,\n                \"created_at\": \"2025-11-08T11:36:05.154757+05:30\",\n                \"updated_at\": \"2025-11-08T11:36:05.154757+05:30\"\n            },\n            \"start_date\": \"2025-11-08T12:21:03.490435+05:30\",\n            \"end_date\": \"2025-12-08T12:21:03.490435+05:30\",\n            \"is_active\": true,\n            \"status\": \"active\",\n            \"created_at\": \"2025-11-08T12:21:03.491163+05:30\",\n            \"updated_at\": \"2025-11-08T12:21:03.491163+05:30\"\n        },\n        {\n            \"id\": \"dd807baa-b73b-4fee-b18e-10ba6aae8830\",\n            \"user_id\": \"4a62c741-c3d3-4456-8029-c0665750259f\",\n            \"plan_id\": \"58f59002-6305-4cbf-b020-1efc3908c3b2\",\n            \"plan\": {\n                \"id\": \"58f59002-6305-4cbf-b020-1efc3908c3b2\",\n                \"name\": \"Free Tier\",\n                \"price\": 0,\n                \"validity_days\": 30,\n                \"access_level\": \"free\",\n                \"max_devices_allowed\": 1,\n                \"resolution\": \"720p\",\n                \"description\": \"The free tier plan\",\n                \"is_active\": true,\n                \"created_at\": \"2025-11-08T11:28:44.948491+05:30\",\n                \"updated_at\": \"2025-11-08T12:11:25.268325+05:30\"\n            },\n            \"start_date\": \"2025-11-08T12:19:46.577125+05:30\",\n            \"end_date\": \"2025-12-08T12:19:46.577125+05:30\",\n            \"is_active\": false,\n            \"status\": \"cancelled\",\n            \"created_at\": \"2025-11-08T12:19:46.578428+05:30\",\n            \"updated_at\": \"2025-11-08T12:20:59.988962+05:30\"\n        },\n        {\n            \"id\": \"20613064-de75-4737-9f49-5255fde2101a\",\n            \"user_id\": \"4a62c741-c3d3-4456-8029-c0665750259f\",\n            \"plan_id\": \"58f59002-6305-4cbf-b020-1efc3908c3b2\",\n            \"plan\": {\n                \"id\": \"58f59002-6305-4cbf-b020-1efc3908c3b2\",\n                \"name\": \"Free Tier\",\n                \"price\": 0,\n                \"validity_days\": 30,\n                \"access_level\": \"free\",\n                \"max_devices_allowed\": 1,\n                \"resolution\": \"720p\",\n                \"description\": \"The free tier plan\",\n                \"is_active\": true,\n                \"created_at\": \"2025-11-08T11:28:44.948491+05:30\",\n                \"updated_at\": \"2025-11-08T12:11:25.268325+05:30\"\n            },\n            \"start_date\": \"2025-11-08T12:11:39.784172+05:30\",\n            \"end_date\": \"2025-12-08T12:11:39.784172+05:30\",\n            \"is_active\": false,\n            \"status\": \"cancelled\",\n            \"created_at\": \"2025-11-08T12:11:39.78507+05:30\",\n            \"updated_at\": \"2025-11-08T12:19:46.607884+05:30\"\n        }\n    ]\n}",
+                "uid": "42882263-aaecb3b0-cfed-49e9-b03d-e2fb101487d1"
+              }
+            ],
+            "uid": "42882263-6ccf62ab-dd2d-49be-8990-af7e558eb568"
+          }
+        ],
+        "id": "6eccf1f0-b1b4-43ae-b1f2-0a3213584f9b",
+        "description": "> All user endpoints require: \n  \n\n**Authorization: Bearer Token**",
+        "uid": "42882263-6eccf1f0-b1b4-43ae-b1f2-0a3213584f9b"
+      },
+      {
+        "name": "Subscriptions",
+        "item": [
+          {
+            "name": "create",
+            "id": "f420c878-19c5-4213-93a7-54b6e745d03b",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"plan_id\": \"caf6d392-b174-4523-a850-b4cd200cd435\"\n}",
+                "options": { "raw": { "language": "json" } }
+              },
+              "url": {
+                "raw": "{{url}}/api/v1/subscriptions",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "subscriptions"]
+              },
+              "description": "**Create a new subscription for the user.**"
+            },
+            "response": [
+              {
+                "id": "53b478dc-37e1-4274-9135-5b2366e7ae6a",
+                "name": "success",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"plan_id\": \"58f59002-6305-4cbf-b020-1efc3908c3b2\"\n}",
+                    "options": { "raw": { "language": "json" } }
+                  },
+                  "url": {
+                    "raw": "{{url}}/api/v1/subscriptions",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "subscriptions"]
+                  }
+                },
+                "status": "Created",
+                "code": 201,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 06:41:39 GMT" },
+                  { "key": "Content-Length", "value": "681" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"id\": \"20613064-de75-4737-9f49-5255fde2101a\",\n    \"user_id\": \"4a62c741-c3d3-4456-8029-c0665750259f\",\n    \"plan_id\": \"58f59002-6305-4cbf-b020-1efc3908c3b2\",\n    \"plan\": {\n        \"id\": \"58f59002-6305-4cbf-b020-1efc3908c3b2\",\n        \"name\": \"Free Tier\",\n        \"price\": 0,\n        \"validity_days\": 30,\n        \"access_level\": \"free\",\n        \"max_devices_allowed\": 1,\n        \"resolution\": \"720p\",\n        \"description\": \"The free tier plan\",\n        \"is_active\": true,\n        \"created_at\": \"2025-11-08T11:28:44.948491+05:30\",\n        \"updated_at\": \"2025-11-08T12:11:25.268325+05:30\"\n    },\n    \"start_date\": \"2025-11-08T12:11:39.784172+05:30\",\n    \"end_date\": \"2025-12-08T12:11:39.784172+05:30\",\n    \"is_active\": true,\n    \"status\": \"active\",\n    \"created_at\": \"2025-11-08T12:11:39.78507+05:30\",\n    \"updated_at\": \"2025-11-08T12:11:39.78507+05:30\"\n}",
+                "uid": "42882263-53b478dc-37e1-4274-9135-5b2366e7ae6a"
+              }
+            ],
+            "uid": "42882263-f420c878-19c5-4213-93a7-54b6e745d03b"
+          },
+          {
+            "name": "active",
+            "id": "3a0358a8-4c2f-41ae-8073-383e497d03f5",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{url}}/api/v1/subscriptions/active",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "subscriptions", "active"]
+              },
+              "description": "**Get the current active subscription.**"
+            },
+            "response": [
+              {
+                "id": "aeca6164-6de7-40a6-9911-07254b16f312",
+                "name": "success",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{url}}/api/v1/subscriptions/active",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "subscriptions", "active"]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 06:43:11 GMT" },
+                  { "key": "Content-Length", "value": "681" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"id\": \"20613064-de75-4737-9f49-5255fde2101a\",\n    \"user_id\": \"4a62c741-c3d3-4456-8029-c0665750259f\",\n    \"plan_id\": \"58f59002-6305-4cbf-b020-1efc3908c3b2\",\n    \"plan\": {\n        \"id\": \"58f59002-6305-4cbf-b020-1efc3908c3b2\",\n        \"name\": \"Free Tier\",\n        \"price\": 0,\n        \"validity_days\": 30,\n        \"access_level\": \"free\",\n        \"max_devices_allowed\": 1,\n        \"resolution\": \"720p\",\n        \"description\": \"The free tier plan\",\n        \"is_active\": true,\n        \"created_at\": \"2025-11-08T11:28:44.948491+05:30\",\n        \"updated_at\": \"2025-11-08T12:11:25.268325+05:30\"\n    },\n    \"start_date\": \"2025-11-08T12:11:39.784172+05:30\",\n    \"end_date\": \"2025-12-08T12:11:39.784172+05:30\",\n    \"is_active\": true,\n    \"status\": \"active\",\n    \"created_at\": \"2025-11-08T12:11:39.78507+05:30\",\n    \"updated_at\": \"2025-11-08T12:11:39.78507+05:30\"\n}",
+                "uid": "42882263-aeca6164-6de7-40a6-9911-07254b16f312"
+              }
+            ],
+            "uid": "42882263-3a0358a8-4c2f-41ae-8073-383e497d03f5"
+          },
+          {
+            "name": "history",
+            "id": "1d7590da-9a6e-4e6b-84be-9b67e0401b76",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{url}}/api/v1/subscriptions/history",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "subscriptions", "history"]
+              },
+              "description": "**Get all subscriptions for the user.**"
+            },
+            "response": [
+              {
+                "id": "0eff4326-c10b-4ee3-b462-82aa2866c96d",
+                "name": "success",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{url}}/api/v1/subscriptions/history",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "subscriptions", "history"]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 06:44:29 GMT" },
+                  { "key": "Content-Length", "value": "701" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"subscriptions\": [\n        {\n            \"id\": \"20613064-de75-4737-9f49-5255fde2101a\",\n            \"user_id\": \"4a62c741-c3d3-4456-8029-c0665750259f\",\n            \"plan_id\": \"58f59002-6305-4cbf-b020-1efc3908c3b2\",\n            \"plan\": {\n                \"id\": \"58f59002-6305-4cbf-b020-1efc3908c3b2\",\n                \"name\": \"Free Tier\",\n                \"price\": 0,\n                \"validity_days\": 30,\n                \"access_level\": \"free\",\n                \"max_devices_allowed\": 1,\n                \"resolution\": \"720p\",\n                \"description\": \"The free tier plan\",\n                \"is_active\": true,\n                \"created_at\": \"2025-11-08T11:28:44.948491+05:30\",\n                \"updated_at\": \"2025-11-08T12:11:25.268325+05:30\"\n            },\n            \"start_date\": \"2025-11-08T12:11:39.784172+05:30\",\n            \"end_date\": \"2025-12-08T12:11:39.784172+05:30\",\n            \"is_active\": true,\n            \"status\": \"active\",\n            \"created_at\": \"2025-11-08T12:11:39.78507+05:30\",\n            \"updated_at\": \"2025-11-08T12:11:39.78507+05:30\"\n        }\n    ]\n}",
+                "uid": "42882263-0eff4326-c10b-4ee3-b462-82aa2866c96d"
+              }
+            ],
+            "uid": "42882263-1d7590da-9a6e-4e6b-84be-9b67e0401b76"
+          },
+          {
+            "name": "cancel",
+            "id": "cb7b8c3c-c1d1-4585-9b61-82670a907a5c",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "POST",
+              "header": [],
+              "url": {
+                "raw": "{{url}}/api/v1/subscriptions/:subscriptionId/cancel",
+                "host": ["{{url}}"],
+                "path": [
+                  "api",
+                  "v1",
+                  "subscriptions",
+                  ":subscriptionId",
+                  "cancel"
+                ],
+                "variable": [
+                  {
+                    "key": "subscriptionId",
+                    "value": "dd807baa-b73b-4fee-b18e-10ba6aae8830"
+                  }
+                ]
+              },
+              "description": "**Cancel a subscription.**"
+            },
+            "response": [
+              {
+                "id": "6174197f-d42b-48da-8a09-c1128db1546e",
+                "name": "success",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [],
+                  "url": {
+                    "raw": "{{url}}/api/v1/subscriptions/:subscriptionId/cancel",
+                    "host": ["{{url}}"],
+                    "path": [
+                      "api",
+                      "v1",
+                      "subscriptions",
+                      ":subscriptionId",
+                      "cancel"
+                    ],
+                    "variable": [
+                      {
+                        "key": "subscriptionId",
+                        "value": "20613064-de75-4737-9f49-5255fde2101a"
+                      }
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 06:48:26 GMT" },
+                  { "key": "Content-Length", "value": "49" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"message\": \"subscription cancelled successfully\"\n}",
+                "uid": "42882263-6174197f-d42b-48da-8a09-c1128db1546e"
+              }
+            ],
+            "uid": "42882263-cb7b8c3c-c1d1-4585-9b61-82670a907a5c"
+          },
+          {
+            "name": "renew",
+            "id": "d750857f-99d7-4b90-8117-8d3e3c441ebe",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "POST",
+              "header": [],
+              "url": {
+                "raw": "{{url}}/api/v1/subscriptions/:subscriptionId/renew",
+                "host": ["{{url}}"],
+                "path": [
+                  "api",
+                  "v1",
+                  "subscriptions",
+                  ":subscriptionId",
+                  "renew"
+                ],
+                "variable": [
+                  {
+                    "key": "subscriptionId",
+                    "value": "20613064-de75-4737-9f49-5255fde2101a"
+                  }
+                ]
+              },
+              "description": "**Renew previous cancelled/expired subscription.**"
+            },
+            "response": [
+              {
+                "id": "962e519e-02e0-41c1-b88d-92704f5aaa78",
+                "name": "success",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [],
+                  "url": {
+                    "raw": "{{url}}/api/v1/subscriptions/:subscriptionId/renew",
+                    "host": ["{{url}}"],
+                    "path": [
+                      "api",
+                      "v1",
+                      "subscriptions",
+                      ":subscriptionId",
+                      "renew"
+                    ],
+                    "variable": [
+                      {
+                        "key": "subscriptionId",
+                        "value": "20613064-de75-4737-9f49-5255fde2101a"
+                      }
+                    ]
+                  }
+                },
+                "status": "Created",
+                "code": 201,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 06:49:46 GMT" },
+                  { "key": "Content-Length", "value": "683" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"id\": \"dd807baa-b73b-4fee-b18e-10ba6aae8830\",\n    \"user_id\": \"4a62c741-c3d3-4456-8029-c0665750259f\",\n    \"plan_id\": \"58f59002-6305-4cbf-b020-1efc3908c3b2\",\n    \"plan\": {\n        \"id\": \"58f59002-6305-4cbf-b020-1efc3908c3b2\",\n        \"name\": \"Free Tier\",\n        \"price\": 0,\n        \"validity_days\": 30,\n        \"access_level\": \"free\",\n        \"max_devices_allowed\": 1,\n        \"resolution\": \"720p\",\n        \"description\": \"The free tier plan\",\n        \"is_active\": true,\n        \"created_at\": \"2025-11-08T11:28:44.948491+05:30\",\n        \"updated_at\": \"2025-11-08T12:11:25.268325+05:30\"\n    },\n    \"start_date\": \"2025-11-08T12:19:46.577125+05:30\",\n    \"end_date\": \"2025-12-08T12:19:46.577125+05:30\",\n    \"is_active\": true,\n    \"status\": \"active\",\n    \"created_at\": \"2025-11-08T12:19:46.578428+05:30\",\n    \"updated_at\": \"2025-11-08T12:19:46.578428+05:30\"\n}",
+                "uid": "42882263-962e519e-02e0-41c1-b88d-92704f5aaa78"
+              }
+            ],
+            "uid": "42882263-d750857f-99d7-4b90-8117-8d3e3c441ebe"
+          }
+        ],
+        "id": "ae42a5ea-f6e0-40ce-a72d-c35da2e6ee77",
+        "description": "> All endpoints require: \n  \n\n**Authorization: Bearer Token**",
+        "uid": "42882263-ae42a5ea-f6e0-40ce-a72d-c35da2e6ee77"
+      },
+      {
+        "name": "Plans",
+        "item": [
+          {
+            "name": "get plans",
+            "id": "1aeef92f-6d75-48bc-a40d-1ae2950610db",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{url}}/api/v1/plans?active=true",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "plans"],
+                "query": [{ "key": "active", "value": "true" }]
+              },
+              "description": "**List all available subscription plans**"
+            },
+            "response": [
+              {
+                "id": "c68ceb4d-93ec-4f53-adce-2f8fd924ad2b",
+                "name": "success",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{url}}/api/v1/plans",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "plans"]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 06:10:11 GMT" },
+                  { "key": "Content-Length", "value": "951" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"plans\": [\n        {\n            \"id\": \"58f59002-6305-4cbf-b020-1efc3908c3b2\",\n            \"name\": \"Free Tier\",\n            \"price\": 0,\n            \"validity_days\": 30,\n            \"access_level\": \"free\",\n            \"max_devices_allowed\": 1,\n            \"resolution\": \"720p\",\n            \"description\": \"The free tier plan\",\n            \"is_active\": true,\n            \"created_at\": \"2025-11-08T11:28:44.948491+05:30\",\n            \"updated_at\": \"2025-11-08T11:28:44.948491+05:30\"\n        },\n        {\n            \"id\": \"940b51db-7bd4-4cd4-82f2-d7650f010b05\",\n            \"name\": \"Basic Tier\",\n            \"price\": 100,\n            \"validity_days\": 30,\n            \"access_level\": \"basic\",\n            \"max_devices_allowed\": 2,\n            \"resolution\": \"1080p\",\n            \"description\": \"The basic tier plan\",\n            \"is_active\": true,\n            \"created_at\": \"2025-11-08T11:36:05.154757+05:30\",\n            \"updated_at\": \"2025-11-08T11:36:05.154757+05:30\"\n        },\n        {\n            \"id\": \"436e4e06-c3b1-4d9b-857e-ad8c190297a7\",\n            \"name\": \"Premium Tier\",\n            \"price\": 2000,\n            \"validity_days\": 30,\n            \"access_level\": \"premium\",\n            \"max_devices_allowed\": 4,\n            \"resolution\": \"4k\",\n            \"description\": \"The premium tier plan\",\n            \"is_active\": true,\n            \"created_at\": \"2025-11-08T11:37:52.206321+05:30\",\n            \"updated_at\": \"2025-11-08T11:37:52.206321+05:30\"\n        }\n    ]\n}",
+                "uid": "42882263-c68ceb4d-93ec-4f53-adce-2f8fd924ad2b"
+              }
+            ],
+            "uid": "42882263-1aeef92f-6d75-48bc-a40d-1ae2950610db"
+          },
+          {
+            "name": "get plan by id",
+            "id": "dd6ad564-a4bc-4875-b977-63351b7798e8",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{url}}/api/v1/plans/:planId",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "plans", ":planId"],
+                "variable": [
+                  {
+                    "key": "planId",
+                    "value": "58f59002-6305-4cbf-b020-1efc3908c3b2"
+                  }
+                ]
+              },
+              "description": "**Get details for a specific subscription plan**"
+            },
+            "response": [
+              {
+                "id": "924f595c-0f56-421d-8db2-8dccaa8c2e2d",
+                "name": "success",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{url}}/api/v1/plans/:id",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "plans", ":id"],
+                    "variable": [
+                      {
+                        "key": "id",
+                        "value": "58f59002-6305-4cbf-b020-1efc3908c3b2"
+                      }
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 06:11:18 GMT" },
+                  { "key": "Content-Length", "value": "307" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"id\": \"58f59002-6305-4cbf-b020-1efc3908c3b2\",\n    \"name\": \"Free Tier\",\n    \"price\": 0,\n    \"validity_days\": 30,\n    \"access_level\": \"free\",\n    \"max_devices_allowed\": 1,\n    \"resolution\": \"720p\",\n    \"description\": \"The free tier plan\",\n    \"is_active\": true,\n    \"created_at\": \"2025-11-08T11:28:44.948491+05:30\",\n    \"updated_at\": \"2025-11-08T11:28:44.948491+05:30\"\n}",
+                "uid": "42882263-924f595c-0f56-421d-8db2-8dccaa8c2e2d"
+              }
+            ],
+            "uid": "42882263-dd6ad564-a4bc-4875-b977-63351b7798e8"
+          },
+          {
+            "name": "create plan",
+            "id": "c8d97e4f-61e0-46b4-a80b-0c39c5f9f2db",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"Premium Tier\",\n    \"price\": 2000,\n    \"validity_days\": 30,\n    \"access_level\": \"premium\",     // free/basic/premium\n    \"max_devices_allowed\": 4,\n    \"resolution\": \"4k\",\n    \"description\": \"The premium tier plan\",\n    \"is_active\": true\n}",
+                "options": { "raw": { "language": "json" } }
+              },
+              "url": {
+                "raw": "{{url}}/api/v1/admin/plans",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "admin", "plans"]
+              },
+              "description": "**Admin: Creates new subscription plan w/ price, duration, access_level,etc.**"
+            },
+            "response": [
+              {
+                "id": "76bb205e-691c-4dfc-8baa-d82a92acec38",
+                "name": "success",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"name\": \"Basic Tier\",\n    \"price\": 100,\n    \"validity_days\": 30,\n    \"access_level\": \"basic\",     // free/basic/premium\n    \"max_devices_allowed\": 2,\n    \"resolution\": \"1080p\",\n    \"description\": \"The basic tier plan\",\n    \"is_active\": true\n}",
+                    "options": { "raw": { "language": "json" } }
+                  },
+                  "url": {
+                    "raw": "{{url}}/api/v1/admin/plans",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "admin", "plans"]
+                  }
+                },
+                "status": "Created",
+                "code": 201,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 06:06:05 GMT" },
+                  { "key": "Content-Length", "value": "313" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"id\": \"940b51db-7bd4-4cd4-82f2-d7650f010b05\",\n    \"name\": \"Basic Tier\",\n    \"price\": 100,\n    \"validity_days\": 30,\n    \"access_level\": \"basic\",\n    \"max_devices_allowed\": 2,\n    \"resolution\": \"1080p\",\n    \"description\": \"The basic tier plan\",\n    \"is_active\": true,\n    \"created_at\": \"2025-11-08T11:36:05.154757+05:30\",\n    \"updated_at\": \"2025-11-08T11:36:05.154757+05:30\"\n}",
+                "uid": "42882263-76bb205e-691c-4dfc-8baa-d82a92acec38"
+              }
+            ],
+            "uid": "42882263-c8d97e4f-61e0-46b4-a80b-0c39c5f9f2db"
+          },
+          {
+            "name": "Update Plan",
+            "id": "cd42cfb9-092c-4eac-aeb0-548ecfdb6548",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "PUT",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"Free Tier\",\n    \"price\": 0,\n    \"validity_days\": 30,\n    \"access_level\": \"free\",     // free/basic/premium\n    \"max_devices_allowed\": 1,\n    \"resolution\": \"720p\",\n    \"description\": \"The free tier plan\",\n    \"is_active\": true\n}",
+                "options": { "raw": { "language": "json" } }
+              },
+              "url": {
+                "raw": "{{url}}/api/v1/admin/plans/:planId",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "admin", "plans", ":planId"],
+                "variable": [
+                  {
+                    "key": "planId",
+                    "value": "58f59002-6305-4cbf-b020-1efc3908c3b2"
+                  }
+                ]
+              },
+              "description": "**Admin: Update exisiting plan with new values**"
+            },
+            "response": [
+              {
+                "id": "fa93a719-c6bc-4bf2-bdcd-5ad59720103b",
+                "name": "success",
+                "originalRequest": {
+                  "method": "PUT",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"name\": \"Free Tier\",\n    \"price\": 10,\n    \"validity_days\": 30,\n    \"access_level\": \"basic\",     // free/basic/premium\n    \"max_devices_allowed\": 4,\n    \"resolution\": \"1080p\",\n    \"description\": \"The free tier plan\",\n    \"is_active\": true\n}",
+                    "options": { "raw": { "language": "json" } }
+                  },
+                  "url": {
+                    "raw": "{{url}}/api/v1/admin/plans/:planId",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "admin", "plans", ":planId"],
+                    "variable": [
+                      {
+                        "key": "planId",
+                        "value": "58f59002-6305-4cbf-b020-1efc3908c3b2"
+                      }
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 06:31:26 GMT" },
+                  { "key": "Content-Length", "value": "310" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"id\": \"58f59002-6305-4cbf-b020-1efc3908c3b2\",\n    \"name\": \"Free Tier\",\n    \"price\": 10,\n    \"validity_days\": 30,\n    \"access_level\": \"basic\",\n    \"max_devices_allowed\": 4,\n    \"resolution\": \"1080p\",\n    \"description\": \"The free tier plan\",\n    \"is_active\": true,\n    \"created_at\": \"2025-11-08T11:28:44.948491+05:30\",\n    \"updated_at\": \"2025-11-08T12:01:26.888803+05:30\"\n}",
+                "uid": "42882263-fa93a719-c6bc-4bf2-bdcd-5ad59720103b"
+              }
+            ],
+            "uid": "42882263-cd42cfb9-092c-4eac-aeb0-548ecfdb6548"
+          },
+          {
+            "name": "Delete Plan",
+            "id": "0e69a516-852b-47f8-8f35-05a6fdb06089",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "DELETE",
+              "header": [],
+              "url": {
+                "raw": "{{url}}/api/v1/admin/plans/:planId",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "admin", "plans", ":planId"],
+                "variable": [
+                  {
+                    "key": "planId",
+                    "value": "436e4e06-c3b1-4d9b-857e-ad8c190297a7"
+                  }
+                ]
+              },
+              "description": "**Admin: Deletes existing plan**"
+            },
+            "response": [
+              {
+                "id": "97b6fffd-83db-4e23-b857-a93afa3d58af",
+                "name": "success",
+                "originalRequest": {
+                  "method": "DELETE",
+                  "header": [],
+                  "url": {
+                    "raw": "{{url}}/api/v1/admin/plans/:planId",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "admin", "plans", ":planId"],
+                    "variable": [
+                      {
+                        "key": "planId",
+                        "value": "436e4e06-c3b1-4d9b-857e-ad8c190297a7"
+                      }
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 06:37:53 GMT" },
+                  { "key": "Content-Length", "value": "39" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"message\": \"plan deleted successfully\"\n}",
+                "uid": "42882263-97b6fffd-83db-4e23-b857-a93afa3d58af"
+              }
+            ],
+            "uid": "42882263-0e69a516-852b-47f8-8f35-05a6fdb06089"
+          }
+        ],
+        "id": "0aa06ad2-9673-40a2-986b-d1b70c79bb8a",
+        "uid": "42882263-0aa06ad2-9673-40a2-986b-d1b70c79bb8a"
+      },
+      {
+        "name": "Content",
+        "item": [
+          {
+            "name": "get all",
+            "id": "9df1e832-2603-4082-bcf8-549f534dd677",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{url}}/api/v1/content?limit=10&offset=0",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "content"],
+                "query": [
+                  { "key": "limit", "value": "10" },
+                  { "key": "offset", "value": "0" }
+                ]
+              },
+              "description": "**Open: List all available content (optionally with filters, pagination)**\n\nRemoves video_url, can retreive this with create watch history"
+            },
+            "response": [
+              {
+                "id": "0965ce30-1e3f-4ebd-bedd-521b59394a92",
+                "name": "success",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{url}}/api/v1/content?limit=10&offset=0",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "content"],
+                    "query": [
+                      { "key": "limit", "value": "10" },
+                      { "key": "offset", "value": "0" }
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 07:10:01 GMT" },
+                  { "key": "Content-Length", "value": "1047" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"contents\": [\n        {\n            \"id\": \"a6114d97-f479-49c2-a8e4-707239de973d\",\n            \"title\": \"Premium Content\",\n            \"description\": \"This is premium content\",\n            \"access_level\": \"premium\",\n            \"duration_seconds\": 600,\n            \"thumbnail_url\": \"/path/to/thumbnail\",\n            \"video_url\": \"/path/to/video\",\n            \"published\": true,\n            \"created_at\": \"2025-11-08T12:37:28.589301+05:30\",\n            \"updated_at\": \"2025-11-08T12:37:28.589301+05:30\"\n        },\n        {\n            \"id\": \"ed27856a-fd5e-43b7-89c2-f6ce07316b9d\",\n            \"title\": \"Basic Content\",\n            \"description\": \"This is basic content\",\n            \"access_level\": \"basic\",\n            \"duration_seconds\": 600,\n            \"thumbnail_url\": \"/path/to/thumbnail\",\n            \"video_url\": \"/path/to/video\",\n            \"published\": true,\n            \"created_at\": \"2025-11-08T12:37:01.587657+05:30\",\n            \"updated_at\": \"2025-11-08T12:37:01.587657+05:30\"\n        },\n        {\n            \"id\": \"5bab7476-ca20-4e73-8847-c4f74d89ebc8\",\n            \"title\": \"Free Content\",\n            \"description\": \"This is free content\",\n            \"access_level\": \"free\",\n            \"duration_seconds\": 60,\n            \"thumbnail_url\": \"/path/to/thumbnail\",\n            \"video_url\": \"/path/to/video\",\n            \"published\": true,\n            \"created_at\": \"2025-11-08T12:35:32.632616+05:30\",\n            \"updated_at\": \"2025-11-08T12:35:32.632616+05:30\"\n        }\n    ],\n    \"limit\": 10,\n    \"offset\": 0,\n    \"total\": 3\n}",
+                "uid": "42882263-0965ce30-1e3f-4ebd-bedd-521b59394a92"
+              }
+            ],
+            "uid": "42882263-9df1e832-2603-4082-bcf8-549f534dd677"
+          },
+          {
+            "name": "get by id",
+            "id": "81351769-fd9e-4beb-ae98-10160600990e",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{url}}/api/v1/content/:contentId",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "content", ":contentId"],
+                "variable": [
+                  {
+                    "key": "contentId",
+                    "value": "5bab7476-ca20-4e73-8847-c4f74d89ebc8"
+                  }
+                ]
+              },
+              "description": "**Get detailed info about a piece of content**\n\nRemoves video_url, can retreive this with create/update watch history"
+            },
+            "response": [
+              {
+                "id": "00cda0ed-3792-4832-a1cd-7a10929b2a27",
+                "name": "success",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{url}}/api/v1/content?limit=10&offset=0",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "content"],
+                    "query": [
+                      { "key": "limit", "value": "10" },
+                      { "key": "offset", "value": "0" }
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 07:10:01 GMT" },
+                  { "key": "Content-Length", "value": "1047" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"contents\": [\n        {\n            \"id\": \"a6114d97-f479-49c2-a8e4-707239de973d\",\n            \"title\": \"Premium Content\",\n            \"description\": \"This is premium content\",\n            \"access_level\": \"premium\",\n            \"duration_seconds\": 600,\n            \"thumbnail_url\": \"/path/to/thumbnail\",\n            \"video_url\": \"/path/to/video\",\n            \"published\": true,\n            \"created_at\": \"2025-11-08T12:37:28.589301+05:30\",\n            \"updated_at\": \"2025-11-08T12:37:28.589301+05:30\"\n        },\n        {\n            \"id\": \"ed27856a-fd5e-43b7-89c2-f6ce07316b9d\",\n            \"title\": \"Basic Content\",\n            \"description\": \"This is basic content\",\n            \"access_level\": \"basic\",\n            \"duration_seconds\": 600,\n            \"thumbnail_url\": \"/path/to/thumbnail\",\n            \"video_url\": \"/path/to/video\",\n            \"published\": true,\n            \"created_at\": \"2025-11-08T12:37:01.587657+05:30\",\n            \"updated_at\": \"2025-11-08T12:37:01.587657+05:30\"\n        },\n        {\n            \"id\": \"5bab7476-ca20-4e73-8847-c4f74d89ebc8\",\n            \"title\": \"Free Content\",\n            \"description\": \"This is free content\",\n            \"access_level\": \"free\",\n            \"duration_seconds\": 60,\n            \"thumbnail_url\": \"/path/to/thumbnail\",\n            \"video_url\": \"/path/to/video\",\n            \"published\": true,\n            \"created_at\": \"2025-11-08T12:35:32.632616+05:30\",\n            \"updated_at\": \"2025-11-08T12:35:32.632616+05:30\"\n        }\n    ],\n    \"limit\": 10,\n    \"offset\": 0,\n    \"total\": 3\n}",
+                "uid": "42882263-00cda0ed-3792-4832-a1cd-7a10929b2a27"
+              }
+            ],
+            "uid": "42882263-81351769-fd9e-4beb-ae98-10160600990e"
+          },
+          {
+            "name": "create",
+            "id": "9191bad7-1eda-402b-aef2-fcfe0c3e428e",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"title\": \"Premium Content\",\n    \"description\": \"This is premium content\",\n    \"access_level\": \"premium\",         // free/basic/premium\n    \"duration_seconds\": 600,\n    \"thumbnail_url\": \"/path/to/thumbnail\",\n    \"trailer_url\": \"/path/to/trailer\",\n    \"video_url\": \"/path/to/video\",\n    \"published\": true\n}",
+                "options": { "raw": { "language": "json" } }
+              },
+              "url": {
+                "raw": "{{url}}/api/v1/admin/content",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "admin", "content"]
+              },
+              "description": "**Admin: Creates new piece of content**"
+            },
+            "response": [
+              {
+                "id": "351590f9-c041-4678-ac26-9e5303922226",
+                "name": "success",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"title\": \"Free Content\",\n    \"description\": \"This is free content\",\n    \"access_level\": \"free\",\n    \"duration_seconds\": 60,\n    \"thumbnail_url\": \"/path/to/thumbnail\",\n    \"video_url\": \"/path/to/video\",\n    \"published\": true\n}",
+                    "options": { "raw": { "language": "json" } }
+                  },
+                  "url": {
+                    "raw": "{{url}}/api/v1/admin/content",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "admin", "content"]
+                  }
+                },
+                "status": "Created",
+                "code": 201,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 07:05:32 GMT" },
+                  { "key": "Content-Length", "value": "328" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"id\": \"5bab7476-ca20-4e73-8847-c4f74d89ebc8\",\n    \"title\": \"Free Content\",\n    \"description\": \"This is free content\",\n    \"access_level\": \"free\",\n    \"duration_seconds\": 60,\n    \"thumbnail_url\": \"/path/to/thumbnail\",\n    \"video_url\": \"/path/to/video\",\n    \"published\": true,\n    \"created_at\": \"2025-11-08T12:35:32.632616+05:30\",\n    \"updated_at\": \"2025-11-08T12:35:32.632616+05:30\"\n}",
+                "uid": "42882263-351590f9-c041-4678-ac26-9e5303922226"
+              }
+            ],
+            "uid": "42882263-9191bad7-1eda-402b-aef2-fcfe0c3e428e"
+          },
+          {
+            "name": "update",
+            "id": "3b2edc23-04ab-4a94-9647-b3486d3b409b",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "PUT",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"title\": \"Premium Content\",\n    \"description\": \"This is premium content\",\n    \"access_level\": \"premium\",         // free/basic/premium\n    \"duration_seconds\": 600,\n    \"thumbnail_url\": \"/path/to/thumbnail\",\n    \"video_url\": \"/path/to/video\",\n    \"published\": true\n}",
+                "options": { "raw": { "language": "json" } }
+              },
+              "url": {
+                "raw": "{{url}}/api/v1/admin/content/:contentId",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "admin", "content", ":contentId"],
+                "variable": [
+                  {
+                    "key": "contentId",
+                    "value": "a6114d97-f479-49c2-a8e4-707239de973d"
+                  }
+                ]
+              },
+              "description": "**Admin: Updates existing piece of content**"
+            },
+            "response": [
+              {
+                "id": "c0da5f69-2e45-4448-955a-651be40e7c15",
+                "name": "success",
+                "originalRequest": {
+                  "method": "PUT",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"title\": \"Premium Content\",\n    \"description\": \"This is now basic content\",\n    \"access_level\": \"basic\",         // free/basic/premium\n    \"duration_seconds\": 600,\n    \"thumbnail_url\": \"/path/to/thumbnail\",\n    \"video_url\": \"/path/to/video\",\n    \"published\": true\n}",
+                    "options": { "raw": { "language": "json" } }
+                  },
+                  "url": {
+                    "raw": "{{url}}/api/v1/admin/content/:contentId",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "admin", "content", ":contentId"],
+                    "variable": [
+                      {
+                        "key": "contentId",
+                        "value": "a6114d97-f479-49c2-a8e4-707239de973d"
+                      }
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 07:13:59 GMT" },
+                  { "key": "Content-Length", "value": "338" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"id\": \"a6114d97-f479-49c2-a8e4-707239de973d\",\n    \"title\": \"Premium Content\",\n    \"description\": \"This is now basic content\",\n    \"access_level\": \"basic\",\n    \"duration_seconds\": 600,\n    \"thumbnail_url\": \"/path/to/thumbnail\",\n    \"video_url\": \"/path/to/video\",\n    \"published\": true,\n    \"created_at\": \"2025-11-08T12:37:28.589301+05:30\",\n    \"updated_at\": \"2025-11-08T12:43:59.221526+05:30\"\n}",
+                "uid": "42882263-c0da5f69-2e45-4448-955a-651be40e7c15"
+              }
+            ],
+            "uid": "42882263-3b2edc23-04ab-4a94-9647-b3486d3b409b"
+          },
+          {
+            "name": "delete",
+            "id": "95937501-0365-4042-a1ab-554b5c0a86bc",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "DELETE",
+              "header": [],
+              "url": {
+                "raw": "{{url}}/api/v1/admin/content/:contentId",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "admin", "content", ":contentId"],
+                "variable": [
+                  {
+                    "key": "contentId",
+                    "value": "a6114d97-f479-49c2-a8e4-707239de973d"
+                  }
+                ]
+              },
+              "description": "**Admin: Deletes existing piece of content**"
+            },
+            "response": [
+              {
+                "id": "d10c301c-425c-4546-b2aa-58c9f913b171",
+                "name": "success",
+                "originalRequest": {
+                  "method": "DELETE",
+                  "header": [],
+                  "url": {
+                    "raw": "{{url}}/api/v1/admin/content/:contentId",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "admin", "content", ":contentId"],
+                    "variable": [
+                      {
+                        "key": "contentId",
+                        "value": "a6114d97-f479-49c2-a8e4-707239de973d"
+                      }
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 07:18:49 GMT" },
+                  { "key": "Content-Length", "value": "42" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"message\": \"content deleted successfully\"\n}",
+                "uid": "42882263-d10c301c-425c-4546-b2aa-58c9f913b171"
+              }
+            ],
+            "uid": "42882263-95937501-0365-4042-a1ab-554b5c0a86bc"
+          }
+        ],
+        "id": "08aa1ca1-45d4-43cd-b722-5913295475a3",
+        "uid": "42882263-08aa1ca1-45d4-43cd-b722-5913295475a3"
+      },
+      {
+        "name": "Watch History",
+        "item": [
+          {
+            "name": "create or update",
+            "id": "3d71cec1-1e7a-4c04-ad1b-aeed48cb2e49",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"content_id\": \"ed27856a-fd5e-43b7-89c2-f6ce07316b9d\",\n    \"watched_seconds\": 0\n}",
+                "options": { "raw": { "language": "json" } }
+              },
+              "url": {
+                "raw": "{{url}}/api/v1/watch-history",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "watch-history"]
+              },
+              "description": "**Create or update watch progress for a content item.**\n\nChecks to see if the user has access to the given content before creating the history."
+            },
+            "response": [
+              {
+                "id": "d60a6e72-7273-4486-a528-32b2cfd8a2a2",
+                "name": "success",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"content_id\": \"a288e55f-b5f9-47b3-9295-5b9334cc25a6\",\n    \"watched_seconds\": 300\n}",
+                    "options": { "raw": { "language": "json" } }
+                  },
+                  "url": {
+                    "raw": "{{url}}/api/v1/watch-history",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "watch-history"]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 07:47:59 GMT" },
+                  { "key": "Content-Length", "value": "705" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"id\": \"447e2563-46ea-492f-84b4-aff0eadce3ee\",\n    \"user_id\": \"fcf6d9ed-7a55-4377-95e0-a23f53a2be94\",\n    \"content_id\": \"a288e55f-b5f9-47b3-9295-5b9334cc25a6\",\n    \"content\": {\n        \"id\": \"a288e55f-b5f9-47b3-9295-5b9334cc25a6\",\n        \"title\": \"Premium Content\",\n        \"description\": \"This is premium content\",\n        \"access_level\": \"premium\",\n        \"duration_seconds\": 600,\n        \"thumbnail_url\": \"/path/to/thumbnail\",\n        \"video_url\": \"/path/to/video\",\n        \"published\": true,\n        \"created_at\": \"2025-11-08T12:49:01.622236+05:30\",\n        \"updated_at\": \"2025-11-08T12:49:01.622236+05:30\"\n    },\n    \"watched_seconds\": 300,\n    \"total_seconds\": 600,\n    \"status\": \"started\",\n    \"last_watched_at\": \"2025-11-08T13:17:59.157961+05:30\",\n    \"created_at\": \"2025-11-08T13:17:59.158119+05:30\",\n    \"updated_at\": \"2025-11-08T13:17:59.158119+05:30\"\n}",
+                "uid": "42882263-d60a6e72-7273-4486-a528-32b2cfd8a2a2"
+              }
+            ],
+            "uid": "42882263-3d71cec1-1e7a-4c04-ad1b-aeed48cb2e49"
+          },
+          {
+            "name": "history",
+            "id": "b4386c88-6534-405b-8d88-04da879363af",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{url}}/api/v1/watch-history?limit=10&offset=0",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "watch-history"],
+                "query": [
+                  { "key": "limit", "value": "10" },
+                  { "key": "offset", "value": "0" }
+                ]
+              },
+              "description": "**Get user's entire watch history (paginated).**"
+            },
+            "response": [
+              {
+                "id": "c40375b9-4260-4590-a2a6-ea02d0f0c6ab",
+                "name": "success",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{url}}/api/v1/watch-history?limit=10&offset=0",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "watch-history"],
+                    "query": [
+                      { "key": "limit", "value": "10" },
+                      { "key": "offset", "value": "0" }
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 08:02:30 GMT" },
+                  { "key": "Content-Length", "value": "1457" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"limit\": 10,\n    \"offset\": 0,\n    \"total\": 2,\n    \"watch_history\": [\n        {\n            \"id\": \"7a3a9790-b01f-41ff-8f86-6c328a23ad9e\",\n            \"user_id\": \"fcf6d9ed-7a55-4377-95e0-a23f53a2be94\",\n            \"content_id\": \"ed27856a-fd5e-43b7-89c2-f6ce07316b9d\",\n            \"content\": {\n                \"id\": \"ed27856a-fd5e-43b7-89c2-f6ce07316b9d\",\n                \"title\": \"Basic Content\",\n                \"description\": \"This is basic content\",\n                \"access_level\": \"basic\",\n                \"duration_seconds\": 600,\n                \"thumbnail_url\": \"/path/to/thumbnail\",\n                \"video_url\": \"/path/to/video\",\n                \"published\": true,\n                \"created_at\": \"2025-11-08T12:37:01.587657+05:30\",\n                \"updated_at\": \"2025-11-08T12:37:01.587657+05:30\"\n            },\n            \"watched_seconds\": 0,\n            \"total_seconds\": 600,\n            \"status\": \"completed\",\n            \"last_watched_at\": \"2025-11-08T13:29:36.244886+05:30\",\n            \"created_at\": \"2025-11-08T13:21:06.099256+05:30\",\n            \"updated_at\": \"2025-11-08T13:29:36.245118+05:30\"\n        },\n        {\n            \"id\": \"447e2563-46ea-492f-84b4-aff0eadce3ee\",\n            \"user_id\": \"fcf6d9ed-7a55-4377-95e0-a23f53a2be94\",\n            \"content_id\": \"a288e55f-b5f9-47b3-9295-5b9334cc25a6\",\n            \"content\": {\n                \"id\": \"a288e55f-b5f9-47b3-9295-5b9334cc25a6\",\n                \"title\": \"Premium Content\",\n                \"description\": \"This is premium content\",\n                \"access_level\": \"premium\",\n                \"duration_seconds\": 600,\n                \"thumbnail_url\": \"/path/to/thumbnail\",\n                \"video_url\": \"/path/to/video\",\n                \"published\": true,\n                \"created_at\": \"2025-11-08T12:49:01.622236+05:30\",\n                \"updated_at\": \"2025-11-08T12:49:01.622236+05:30\"\n            },\n            \"watched_seconds\": 300,\n            \"total_seconds\": 600,\n            \"status\": \"started\",\n            \"last_watched_at\": \"2025-11-08T13:17:59.157961+05:30\",\n            \"created_at\": \"2025-11-08T13:17:59.158119+05:30\",\n            \"updated_at\": \"2025-11-08T13:17:59.158119+05:30\"\n        }\n    ]\n}",
+                "uid": "42882263-c40375b9-4260-4590-a2a6-ea02d0f0c6ab"
+              }
+            ],
+            "uid": "42882263-b4386c88-6534-405b-8d88-04da879363af"
+          },
+          {
+            "name": "continue watching",
+            "id": "5607ccce-b895-429a-ad27-2eb00d25165b",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{url}}/api/v1/watch-history/continue-watching",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "watch-history", "continue-watching"]
+              },
+              "description": "**Lists all content that the user has started watching but has not finished.**"
+            },
+            "response": [
+              {
+                "id": "fe271c06-3cc7-489b-9319-0b2d8a9fdea1",
+                "name": "success",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{url}}/api/v1/watch-history/continue-watching",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "watch-history", "continue-watching"]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 08:04:26 GMT" },
+                  { "key": "Content-Length", "value": "729" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"continue_watching\": [\n        {\n            \"id\": \"447e2563-46ea-492f-84b4-aff0eadce3ee\",\n            \"user_id\": \"fcf6d9ed-7a55-4377-95e0-a23f53a2be94\",\n            \"content_id\": \"a288e55f-b5f9-47b3-9295-5b9334cc25a6\",\n            \"content\": {\n                \"id\": \"a288e55f-b5f9-47b3-9295-5b9334cc25a6\",\n                \"title\": \"Premium Content\",\n                \"description\": \"This is premium content\",\n                \"access_level\": \"premium\",\n                \"duration_seconds\": 600,\n                \"thumbnail_url\": \"/path/to/thumbnail\",\n                \"video_url\": \"/path/to/video\",\n                \"published\": true,\n                \"created_at\": \"2025-11-08T12:49:01.622236+05:30\",\n                \"updated_at\": \"2025-11-08T12:49:01.622236+05:30\"\n            },\n            \"watched_seconds\": 300,\n            \"total_seconds\": 600,\n            \"status\": \"started\",\n            \"last_watched_at\": \"2025-11-08T13:17:59.157961+05:30\",\n            \"created_at\": \"2025-11-08T13:17:59.158119+05:30\",\n            \"updated_at\": \"2025-11-08T13:17:59.158119+05:30\"\n        }\n    ]\n}",
+                "uid": "42882263-fe271c06-3cc7-489b-9319-0b2d8a9fdea1"
+              }
+            ],
+            "uid": "42882263-5607ccce-b895-429a-ad27-2eb00d25165b"
+          },
+          {
+            "name": "update",
+            "id": "80f4f7ed-4249-48e5-a08d-630ff04ae1af",
+            "protocolProfileBehavior": { "disableBodyPruning": true },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  { "key": "token", "value": "{{token}}", "type": "string" }
+                ]
+              },
+              "method": "PUT",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"watched_seconds\": 10\n}",
+                "options": { "raw": { "language": "json" } }
+              },
+              "url": {
+                "raw": "{{url}}/api/v1/watch-history/:historyId",
+                "host": ["{{url}}"],
+                "path": ["api", "v1", "watch-history", ":historyId"],
+                "variable": [
+                  {
+                    "key": "historyId",
+                    "value": "7a3a9790-b01f-41ff-8f86-6c328a23ad9e"
+                  }
+                ]
+              },
+              "description": "**Update watch progress for a specific watch entry.**"
+            },
+            "response": [
+              {
+                "id": "4a7a7a9c-23aa-4d38-897f-85b84a4f720c",
+                "name": "success",
+                "originalRequest": {
+                  "method": "PUT",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"watched_seconds\": 10\n}",
+                    "options": { "raw": { "language": "json" } }
+                  },
+                  "url": {
+                    "raw": "{{url}}/api/v1/watch-history/:historyId",
+                    "host": ["{{url}}"],
+                    "path": ["api", "v1", "watch-history", ":historyId"],
+                    "variable": [
+                      {
+                        "key": "historyId",
+                        "value": "7a3a9790-b01f-41ff-8f86-6c328a23ad9e"
+                      }
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": null,
+                "header": [
+                  {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With"
+                  },
+                  {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "POST, OPTIONS, GET, PUT, DELETE, PATCH"
+                  },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  { "key": "Date", "value": "Sat, 08 Nov 2025 08:08:32 GMT" },
+                  { "key": "Content-Length", "value": "697" }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n    \"id\": \"7a3a9790-b01f-41ff-8f86-6c328a23ad9e\",\n    \"user_id\": \"fcf6d9ed-7a55-4377-95e0-a23f53a2be94\",\n    \"content_id\": \"ed27856a-fd5e-43b7-89c2-f6ce07316b9d\",\n    \"content\": {\n        \"id\": \"ed27856a-fd5e-43b7-89c2-f6ce07316b9d\",\n        \"title\": \"Basic Content\",\n        \"description\": \"This is basic content\",\n        \"access_level\": \"basic\",\n        \"duration_seconds\": 600,\n        \"thumbnail_url\": \"/path/to/thumbnail\",\n        \"video_url\": \"/path/to/video\",\n        \"published\": true,\n        \"created_at\": \"2025-11-08T12:37:01.587657+05:30\",\n        \"updated_at\": \"2025-11-08T12:37:01.587657+05:30\"\n    },\n    \"watched_seconds\": 10,\n    \"total_seconds\": 600,\n    \"status\": \"paused\",\n    \"last_watched_at\": \"2025-11-08T13:38:32.120504+05:30\",\n    \"created_at\": \"2025-11-08T13:21:06.099256+05:30\",\n    \"updated_at\": \"2025-11-08T13:38:32.128453+05:30\"\n}",
+                "uid": "42882263-4a7a7a9c-23aa-4d38-897f-85b84a4f720c"
+              }
+            ],
+            "uid": "42882263-80f4f7ed-4249-48e5-a08d-630ff04ae1af"
+          }
+        ],
+        "id": "b68a05fd-1732-4aa1-a730-cf25c448dd0d",
+        "uid": "42882263-b68a05fd-1732-4aa1-a730-cf25c448dd0d"
+      }
+    ]
+  }
+}

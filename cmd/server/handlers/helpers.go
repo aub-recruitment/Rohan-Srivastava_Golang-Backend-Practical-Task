@@ -6,6 +6,7 @@ import (
 	"github.com/etsrohan/Rohan-Srivastava_Golang-Backend-Practical-Task/internal/domain"
 )
 
+// @name getErrorStatusCode - converts domain error to http status code
 func getErrorStatusCode(err error) int {
 	switch err {
 	case domain.ErrInvalidCredentials:

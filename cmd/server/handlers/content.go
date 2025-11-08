@@ -15,18 +15,6 @@ type ContentHandler struct {
 	contentUseCase *usecases.ContentUseCase
 }
 
-// ID              uuid.UUID   `gorm:"type:uuid;primary_key;default:gen_random_uuid()" json:"id"`
-// 	Title           string      `gorm:"not null;index" json:"title"`
-// 	Description     string      `json:"description"`
-// 	AccessLevel     AccessLevel `gorm:"type:varchar(20);not null;index" json:"access_level"`
-// 	DurationSeconds int         `gorm:"not null" json:"duration_seconds"`
-// 	ThumbnailURL    string      `json:"thumbnail_url"`
-// 	TrailerURL      string      `json:"trailer_url"`
-// 	VideoURL        string      `json:"video_url"`
-// 	Published       bool        `gorm:"default:false;index" json:"published"`
-// 	CreatedAt       time.Time   `gorm:"autoCreateTime" json:"created_at"`
-// 	UpdatedAt       time.Time   `gorm:"autoUpdateTime" json:"updated_at"`
-
 type OpenContentOutput struct {
 	ID           uuid.UUID           `json:"id"`
 	Title        string              `json:"title"`
@@ -39,10 +27,16 @@ type OpenContentOutput struct {
 	UpdatedAt    time.Time           `json:"updated_at"`
 }
 
+// @name NewContentHandler - create a new instance of Content Handler
+// @param contentUseCase - content service instance
+// @returns - content handler instance
 func NewContentHandler(contentUseCase *usecases.ContentUseCase) *ContentHandler {
 	return &ContentHandler{contentUseCase: contentUseCase}
 }
 
+// @name CreateContent - admin creates new content with access level
+// @param c - gin context
+// @returns - newly created content
 func (h *ContentHandler) CreateContent(c *gin.Context) {
 	var input usecases.CreateContentInput
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -57,6 +51,10 @@ func (h *ContentHandler) CreateContent(c *gin.Context) {
 	c.JSON(http.StatusCreated, content)
 }
 
+// @name GetContent - Open API to get content with given ID
+// @param c - gin context
+// @returns - content with id
+// @dev - removes video_url so anyone can see content
 func (h *ContentHandler) GetContent(c *gin.Context) {
 	contentID, err := uuid.Parse(c.Param("id"))
 	if err != nil {
@@ -88,6 +86,10 @@ func (h *ContentHandler) GetContent(c *gin.Context) {
 	})
 }
 
+// @name ListContent - Open API to get all content w/ pagination
+// @param c - gin context
+// @returns - list of content
+// @dev - removes video_url so anyone can see content
 func (h *ContentHandler) ListContent(c *gin.Context) {
 	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "20"))
 	offset, _ := strconv.Atoi(c.DefaultQuery("offset", "0"))
@@ -121,6 +123,9 @@ func (h *ContentHandler) ListContent(c *gin.Context) {
 	})
 }
 
+// @name UpdateContent - Admin API to update existing content
+// @param c - gin context
+// @returns - updated content
 func (h *ContentHandler) UpdateContent(c *gin.Context) {
 	contentID, err := uuid.Parse(c.Param("id"))
 	if err != nil {
@@ -140,6 +145,9 @@ func (h *ContentHandler) UpdateContent(c *gin.Context) {
 	c.JSON(http.StatusOK, content)
 }
 
+// @name GetContent - Admin API to delete content with ID
+// @param c - gin context
+// @returns - deletion confirmation message
 func (h *ContentHandler) DeleteContent(c *gin.Context) {
 	contentID, err := uuid.Parse(c.Param("id"))
 	if err != nil {

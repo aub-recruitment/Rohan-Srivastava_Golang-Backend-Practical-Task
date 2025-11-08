@@ -21,6 +21,7 @@ import (
 )
 
 func main() {
+	// Config + Postgres + Redis + JWT Setup
 	cfg, err := config.Load()
 	if err != nil {
 		log.Fatalf("Failed to load config: %v", err)
@@ -42,12 +43,14 @@ func main() {
 
 	jwtService := infrastructure.NewJWTService(cfg.JWTSecret, cfg.JWTSauce, cfg.JWTExpiration)
 
+	// Repositories Setup
 	userRepo := postgres.NewUserRepository(db)
 	contentRepo := postgres.NewContentRepository(db)
 	planRepo := postgres.NewPlanRepository(db)
 	subscriptionRepo := postgres.NewSubscriptionRepository(db)
 	watchHistoryRepo := postgres.NewWatchHistoryRepository(db)
 
+	// Usecases (Services) Setup
 	authUseCase := usecases.NewAuthUseCase(userRepo, jwtService, cache, cfg.JWTExpiration)
 	userUseCase := usecases.NewUserUseCase(userRepo, subscriptionRepo)
 	contentUseCase := usecases.NewContentUseCase(contentRepo, subscriptionRepo, userRepo)
@@ -55,6 +58,7 @@ func main() {
 	subscriptionUseCase := usecases.NewSubscriptionUseCase(subscriptionRepo, planRepo, userRepo)
 	watchHistoryUseCase := usecases.NewWatchHistoryUseCase(watchHistoryRepo, contentRepo, subscriptionRepo)
 
+	// Handler (Controllers) Setup
 	authHandler := handlers.NewAuthHandler(authUseCase)
 	userHandler := handlers.NewUserHandler(userUseCase)
 	contentHandler := handlers.NewContentHandler(contentUseCase)
@@ -62,6 +66,7 @@ func main() {
 	subscriptionHandler := handlers.NewSubscriptionHandler(subscriptionUseCase)
 	watchHistoryHandler := handlers.NewWatchHistoryHandler(watchHistoryUseCase)
 
+	// Server w/ Routes Setup
 	if cfg.Environment == "production" {
 		gin.SetMode(gin.ReleaseMode)
 	}
@@ -86,6 +91,7 @@ func main() {
 		}
 	}()
 
+	// Server graceful shutdown
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
@@ -111,11 +117,13 @@ func setupRoutes(
 	subscriptionHandler *handlers.SubscriptionHandler,
 	watchHistoryHandler *handlers.WatchHistoryHandler,
 ) {
+	// Default Routes
 	router.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": "healthy"})
 	})
 	router.NoRoute(middleware.NoRouteMiddleware())
 
+	// Public Routes
 	v1 := router.Group("/api/v1")
 	public := v1.Group("")
 	{
@@ -136,6 +144,7 @@ func setupRoutes(
 		}
 	}
 
+	// JWT Protected Routes
 	authMiddleware := middleware.AuthMiddleware(jwtService, cache)
 	rateLimitMiddleware := middleware.RateLimitMiddleware(cache, int64(cfg.RequestLimit), time.Minute)
 
@@ -143,6 +152,7 @@ func setupRoutes(
 	protected.Use(authMiddleware)
 	protected.Use(rateLimitMiddleware)
 	{
+		// User Routes
 		auth := protected.Group("/auth")
 		{
 			auth.GET("/refresh", authHandler.Refresh)
@@ -168,6 +178,8 @@ func setupRoutes(
 			watchHistory.GET("/continue-watching", watchHistoryHandler.GetContinueWatching)
 			watchHistory.PUT("/:id", watchHistoryHandler.UpdateProgress)
 		}
+
+		// Admin Routes
 		adminMiddleware := middleware.AdminMiddleware()
 		admin := protected.Group("/admin")
 		admin.Use(adminMiddleware)
