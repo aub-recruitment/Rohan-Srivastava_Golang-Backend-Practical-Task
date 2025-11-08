@@ -1,5 +1,10 @@
 # 📐 Architecture Document
 
+[<img alt="Golang" src="https://img.shields.io/badge/golang-%23007D9C.svg?style=for-the-badge&logo=go&logoColor=white">](https://go.dev/)
+[<img alt="Golang" src="https://img.shields.io/badge/gin-%2317181C.svg?style=for-the-badge&logo=gin&logoColor=white">](https://gin-gonic.com/)
+[<img alt="Redis" src="https://img.shields.io/badge/redis-D23930?style=for-the-badge&logo=redis&logoColor=white"> ](https://redis.io/)
+[<img alt="Redis" src="https://img.shields.io/badge/postgres-212121?style=for-the-badge&logo=postgres&logoColor=white"> ](https://www.postgresql.org/)
+
 ## 🚀 Setup Instructions
 
 This guide provides step-by-step instructions for setting up the streaming backend on your local machine.
@@ -152,6 +157,8 @@ go test ./tests/unit -v -cover
 ---
 
 ## Architecture Explanation
+
+[![Architecture](./documentation/backend_architecture.png)]()
 
 The architecture of this streaming backend is grounded in Clean Architecture and Domain-Driven Design principles, with a modular separation of domains, usecases, repositories, infrastructure, and interfaces. By designing around a layered architecture using Go and the Gin framework, every component—from core business logic to application orchestration to database adapters—remains isolated and testable. All dependencies are injected dynamically, and domain entities are completely decoupled from infrastructure, making the system easy to extend for future requirements such as new storage engines or authentication methods.
 
